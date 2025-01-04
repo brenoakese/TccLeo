@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles/style-inicial.css">
+    <script src="https://kit.fontawesome.com/b8475028b4.js" crossorigin="anonymous"></script>
+    <title> Tela inicial </title>
+</head>
+<body>
+
+    <header>
+        <h2 class="title title-principal"> Tela Inicial </h2>
+        <a onclick=showSidebar() href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;"></i> </a>
+    </header>
+
+    <nav>
+        <ul class="sidebar">
+            <li onclick=hideSidebar()><a href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;" size="200px"></i> </a></li>
+            <li class="hideOnMobile"><a href="#"> Perfil </a></li>
+            <li class="hideOnMobile"><a href="#"> Configurações </a></li>
+            <li class="hideOnMobile"><a href="#"> Sair </a></li>
+        </ul>  
+    </nav>
+
+    <script>
+
+        function showSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+
+        function hideSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+
+    </script>
+
+    <div class="container-inicial"> 
+
+        <div class="content-novaconversa">
+            <i class="fa-solid fa-comment icon-modify" style="color: #63E6BE;"></i>
+            <h2 class="title title-novaconversa"> Nova conversa </h2>
+            <p class="description description-novaconversa"> Insira seu banco de dados e comece um novo chatbot direcionado à ele. </p>
+            <button id="novaconversa" class="btn btn-second"> Começar agora </button>
+
+        </div> <!-- column nova conversa -->
+
+        <div class="content-chats">
+            <i class="fa-solid fa-inbox icon-modify" style="color: #fff;"></i>
+            <h2 class="title title-chats"> Chats </h2>
+            <p class="description description-chats"> Reabra seus chatbots já iniciados anteriormente, ou crie novos agentes para seus chatbots </p>
+            <button id="chats" class="btn btn-primary"> Acesso ao meu histórico </button>
+
+        </div> <!-- column chats -->
+
+    </div> <!-- container inicial -->
+
+    
+
+</body>
+</html>

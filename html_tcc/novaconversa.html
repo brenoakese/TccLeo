@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles/style-novaconversa.css">
+    <script src="https://kit.fontawesome.com/b8475028b4.js" crossorigin="anonymous"></script>
+    <title> Nova conversa </title>
+</head>
+<body>
+    <header>
+        <h2 class="title title-principal"> Nova Conversa </h2>
+        <a onclick=showSidebar() href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;"></i> </a>
+    </header>
+
+    <nav>
+        <ul class="sidebar">
+            <li onclick=hideSidebar()><a href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;" size="200px"></i> </a></li>
+            <li class="hideOnMobile"><a href="#"> Perfil </a></li>
+            <li class="hideOnMobile"><a href="#"> Configurações </a></li>
+            <li class="hideOnMobile"><a href="#"> Sair </a></li>
+        </ul>  
+    </nav>
+
+    <script>
+
+        function showSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+
+        function hideSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+
+    </script>
+    
+    <div class="container-total">
+
+        <div class="container-inicial"> 
+
+            <div class="content-txt">
+                <h2 class="title title-txt"> Carregar .TXT </h2>
+                <p class="description description-txt"> Insira seu arquivo .txt e carregue seus dados, para criar um chat. </p>
+                
+                <div class="div-input">
+                    <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;""></i>
+                    <input type="file" class="input-upload"> Clique para upload
+                </div>
+
+            </div> <!-- column carregar .txt -->
+
+            <div class="content-bancodados">
+                <h2 class="title title-secundario"> Banco de dados </h2>
+                <p class="description description-principal"> Se conecte com o servidor e suba seu banco de dados, para criar um chat. </p>
+                
+                <form class="form">
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-cloud icon-modify" style="color: #63E6BE;"></i>
+                        <input type="text" placeholder="Servidor" class="form-input">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-regular fa-user icon-modify" style="color: #63E6BE;"></i>
+                        <input type="text" placeholder="Usuário" class="form-input">
+                    </label>
+                    
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-lock icon-modify" style="color: #63E6BE;"></i>
+                        <input type="password" placeholder="Password" class="form-input">
+                    </label>
+                    
+                    <button class="btn btn-second"> conectar </button>
+                
+                </form><!-- forms cadastro -->
+
+            </div> <!-- column banco de dados -->
+
+        </div> <!-- container inicial -->
+
+    </div> <!-- container total --> 
+
+</body>
+</html>
