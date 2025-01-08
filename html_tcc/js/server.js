@@ -1,11 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { Client } from 'pg';
+import pkg from 'pg';
 
 
-
-const Client = require('pg')
+const { Client } = pkg;
 
 const client = new Client({
     user: 'postgres',
@@ -15,17 +14,13 @@ const client = new Client({
     port: 5432,
 });
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-
 
 app.use(cors());
 app.use(bodyParser.json());
 
-
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -38,10 +33,20 @@ app.post('/login', (req, res) => {
 
     console.log(`[${new Date().toISOString()}] Login attempt - Email: ${email}`);
 
-    if (email === 'test@example.com' && password === 'password123') {
-        res.status(200).json({ message: 'Login bem-sucedido!' });
-    } else {
-        res.status(401).json({ message: 'Credenciais inválidas.' });
+    try {
+        await client.connect();
+        const result = await client.query('SELECT * FROM users WHERE username = $1 AND password = $2', [email, password]);
+
+        if (result.rows.length > 0) {
+            res.status(200).json({ message: 'Login bem-sucedido!' });
+        } else {
+            res.status(401).json({ message: 'Credenciais inválidas.' });
+        }
+    } catch (error) {
+        console.error('Erro ao acessar o banco de dados:', error);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
+    } finally {
+        await client.end();
     }
 });
 
@@ -49,7 +54,6 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Algo deu errado no servidor.' });
 });
-
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
