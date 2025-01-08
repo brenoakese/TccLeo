@@ -1,10 +1,24 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { Client } from 'pg';
+
+
+
+const Client = require('pg')
+
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Chatbot',
+    password: '123456789',
+    port: 5432,
+});
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 
 
 app.use(cors());
