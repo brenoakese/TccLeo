@@ -178,6 +178,7 @@ nav a:hover {
     place-content: center;
     gap: 8px;
     color: #fff;
+    margin-bottom: 1rem;
 }
 
 .input-upload {
