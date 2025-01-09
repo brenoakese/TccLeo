@@ -38,18 +38,35 @@ document.getElementById("btn-login").addEventListener("click", async (event) => 
 });
 
 
-document.getElementById("btn-cadastro").addEventListener("click", (event) => {
+document.getElementById("btn-cadastro").addEventListener("click", async (event) => {
 
    event.preventDefault()
 
-   userData.name = document.getElementById("name-cadastro").value;
-   userData.email = document.getElementById("email-cadastro").value;
-   userData.password = document.getElementById("password-cadastro").value;
+   const UserData = {
+        name: document.getElementById("name-cadastro").value,
+        email: document.getElementById("email-cadastro").value,
+        password: document.getElementById("password-cadastro").value,
+   };
 
-   document.getElementById("name-cadastro").value = "";
-   document.getElementById("email-cadastro").value = "";
-   document.getElementById("password-cadastro").value = "";
+   try {
+       const response = await fetch('http://127.0.0.1:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(UserData),
+        });
+   
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message); // Exibe mensagem de sucesso
+        } else {
+            alert(result.message); // Exibe mensagem de erro
+            console.error(result.message); // Exibe mensagem de erro
+        }
+    } catch (error) {
+        console.log('Erro ao fazer cadastro:', error);
+    }
 
-   console.log(userData)
 
 })
