@@ -18,6 +18,9 @@ header {
     justify-content: space-between;
     text-align: center;
     padding: 10px 35px 10px 35px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 nav {
@@ -50,6 +53,22 @@ nav a:hover {
     background-color: #f0f0f0;
 }
 
+nav button {
+    all: unset; /* Remove os estilos padrões */
+    height: 100%;
+    padding: 0 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: black;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background-color: #f0f0f0;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -64,6 +83,7 @@ nav a:hover {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    z-index: 1100;
 }
 
 .sidebar li {
@@ -71,6 +91,10 @@ nav a:hover {
 }
 
 .sidebar a {
+    width: 100%;
+}
+
+.sidebar button {
     width: 100%;
 }
 

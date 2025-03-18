@@ -17,6 +17,9 @@ header {
     justify-content: space-between;
     text-align: center;
     padding: 10px 35px 10px 35px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 nav {
@@ -63,6 +66,7 @@ nav a:hover {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    z-index: 1100;
 }
 
 .sidebar li {

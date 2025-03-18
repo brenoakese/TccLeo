@@ -1,3 +1,7 @@
+// LÓGICA DE LOGIN
+
+
+
 document.getElementById("btn-login").addEventListener("click", async (event) => {
    event.preventDefault();
 
@@ -26,16 +30,25 @@ document.getElementById("btn-login").addEventListener("click", async (event) => 
        // Processar a resposta
        const result = await response.json();
        if (response.ok) {
-           console.log(result.message); // Exibe mensagem de sucesso
 
-           window.location.href = 'telainicial.html'; // Redirecionar para a página inicial
+        // Armazena o email do usuário no localstorage
+        localStorage.setItem("userEmail", userData.email);
+
+        alert(result.message); // Exibe mensagem de sucesso
+
+        window.location.href = 'telainicial.html'; // Redirecionar para a página inicial
        } else {
-           console.error(result.message); // Exibe mensagem de erro
+        alert(result.message); // Exibe mensagem de erro
        }
    } catch (error) {
        console.log('Erro ao fazer login:', error);
    }
 });
+
+
+
+// LÓGICA DE CADASTRO
+
 
 
 document.getElementById("btn-cadastro").addEventListener("click", async (event) => {
@@ -56,7 +69,10 @@ document.getElementById("btn-cadastro").addEventListener("click", async (event) 
             },
             body: JSON.stringify(UserData),
         });
+
+
    
+        // Processar a resposta
         const result = await response.json();
         if (response.ok) {
             alert(result.message); // Exibe mensagem de sucesso
@@ -68,5 +84,23 @@ document.getElementById("btn-cadastro").addEventListener("click", async (event) 
         console.log('Erro ao fazer cadastro:', error);
     }
 
+    // Limpar os campos do formulário
+    document.getElementById("name-cadastro").value = "";
+    document.getElementById("email-cadastro").value = "";
+    document.getElementById("password-cadastro").value = "";
+
+    
+
 
 })
+
+
+
+// IR PARA A TELA DE RECUPERAR SENHA
+document.getElementById("btn-esqueceu-cadastro").addEventListener("click", async (event) => {
+    event.preventDefault();
+    
+    window.location.href = 'esqueceusenha.html';
+});
+
+
