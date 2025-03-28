@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    background-color: #ecf0f1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding: 10px 35px 10px 35px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    background-color: #fff;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav li {
+    height: 50px;
+}
+
+nav a {
+    height: 100%;
+    padding: 0 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+nav a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    background-color: white;
+    backdrop-filter: blur(10px);
+    box-shadow: -6.5px 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    z-index: 1100;
+}
+
+.sidebar li {
+    width: 100%;
+}
+
+.sidebar a {
+    width: 100%;
+}
+
+@media(max-width: 800px) {
+    .hideOnMobile {
+        display: none;
+    }
+}
+
+@media(max-width: 400px) {
+    .sidebar {
+        width: 100%;
+    }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ecf0f1;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.content-chats {
+    background-color: #fff;
+    border-radius: 15px;
+    width: 550px;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    box-shadow: -5px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-chats {
+    cursor: pointer;
+    border-width: 0px;
+    margin-top: 1rem;
+
+    width: 550px;
+    height: 30vh;
+}
+
+.btn-chats:hover {
+    border: 2px solid #58af9b;
+    border-radius: 15px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.title-principal {
+    color: #58af9b;
+    margin: 0 auto; 
+    text-align: center; 
+    flex-grow: 1; 
+}
+
+.title-chats {
+    margin: 5px;
+    border: 2px;
+    padding: 5px;
+}
+
+.title-h3 {
+    font-size: 18px;
+    color: grey;
+}
+
+.title-h4 {
+    font-size: 15px;
+    color: black;
+}
+
+.description {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 30px;
+    margin: 5px;
+    border: 2px;
+    padding: 5px;
+}
+
+.description-chats {
+    width: 100%;
+    text-align: center;
+}
+
+.icon-sidebar {
+    color: #7f8c8d;
+    padding: 0 15px;
+    font-size: 30px;
+}
