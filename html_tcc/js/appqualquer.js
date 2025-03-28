@@ -1,1 +1,0 @@
-let qualquer coisa
