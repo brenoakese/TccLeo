@@ -2,6 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
+import multer from 'multer';
+import path from 'path';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import { stdout } from 'process';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const { Pool } = pkg;
 
@@ -341,4 +352,56 @@ app.post('/delete-account', async (req, res) => {
 
 
 
+// ARQUIVOS
+// CONFIGURAÇÃO DE ARMAZENAMENTO 
 
+
+
+// Garante que a pasta de uploads exista
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Configura o multer para salvar arquivos localmente
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploadDir') // pasta onde os arquivos serão salvos
+    },
+    filename: (req, file, cb)=> {
+        cb(null, Date.now() + path.extname(file.originalname)); // ex: 12345678.txt
+    },
+});
+
+const upload = multer({ storage });
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.post('/upload-txt', upload.single('arquivoTxt'), (req, res) => {
+    if(!req.file) {
+        return res.status(400).json({ message: 'Nenhum arquivo enviado.' });
+    }
+
+    const filePath = path.join(__dirname, req.file.path);
+
+    exec(`python3 TccLeo/chatbot/rag_local.py "${filePath}"`, (error, stdout, stderr)=> {
+
+        if (error) {
+            console.error(`Erro ao executar script Python: ${error.message}`);
+            return res.status(500).send(`Erro ao processar arquivo:\n${error.message}`);
+        }
+
+        if (stderr) {
+            console.error(`Stderr do Python: ${stderr}`);
+        }
+
+        console.log(`Saída do script Python:\n${stdout}`);
+
+        res.json({
+            message: 'Arquivo enviado e processado com sucesso!',
+            filePath: filePath,
+            output: stdout
+        });
+    });
+});

@@ -265,6 +265,11 @@ input:-webkit-autofill {
     margin-bottom: 1rem;
 }
 
+.btn-upload{
+    justify-content: center;
+    align-items: center;
+}
+
 .btn-second {
     background-color: #58af9b;
     border: 1px solid #58af9b;

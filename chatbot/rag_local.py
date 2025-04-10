@@ -5,6 +5,7 @@ from langchain_chroma import Chroma
 from langchain_community.embeddings import GPT4AllEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ def open_file(file_path):
     except Exception as e:
         return f"Error: {e}"
 
-arquivo = "fisio.txt"
+arquivo = sys.argv[1]
 
 texto = open_file(arquivo)
 filename = os.path.basename(arquivo)
