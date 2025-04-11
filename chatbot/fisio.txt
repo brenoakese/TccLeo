@@ -1,84 +1,40 @@
-O que saber antes de ter um porquinho da índia?
-Descobrindo o Encanto Peludo: A Experiência de Ter um Porquinho da Índia
+O que é Unix?
+O Unix é um sistema operacional de código fechado lançado em 1971 que trouxe novos conceitos a este tipo de software, como arquivos de dispositivo e processos de computadores para o mercado. Ele marcou a história ao servir de base para a criação de outras plataformas populares, como o Linux e o macOS, e eventualmente ganhou o título de “pai dos sistemas operacionais”.
+A história do Unix
 
-Estes adoráveis roedores conquistam corações com seus olhinhos expressivos, suas vocalizações características e seus pequenos pés que fazem cócegas nas palmas das mãos. Mas o que realmente significa ter um porquinho da Índia como parte da sua vida?
+Na década de 60, as empresas Bell Labs (que mais tarde se tornaria AT&T), General Electric e o Instituto de Tecnologia de Massachusetts (todos dos EUA) trabalharam juntas no desenvolvimento de um sistema operacional chamado Multics — sigla em inglês para Informação Multiplexada e Serviço de Computação, em português. Entretanto, os resultados não foram satisfatórios e o projeto foi encerrado.
+Foi neste momento que a dupla de cientistas da Bell Labs, Ken Thompson e Dennis Ritchie, decidiu dar continuidade ao trabalho. Como resultado, eles criaram a fundação para o Unix OS em 1969, que tinha como componentes uma interface de linha de comando (CLI) e um sistema de arquivos hierárquico. Em março de 1971, a primeira versão do Unix foi lançada e incluía 60 comandos distintos.
 
-Neste blog, embarcaremos em uma jornada irresistível para descobrir os encantos e desafios de ser o orgulhoso humano de um porquinho da Índia. Desde os primeiros momentos de descoberta até as rotinas diárias repletas de fofura, exploraremos juntos como essas adoráveis criaturas enriquecem nossas vidas de maneiras inimagináveis.
+No ano de 1973, Thompson e Ritchie reescreveram o Unix em sua quarta edição com o uso da linguagem C para um computador PDP-11 — máquina de 16 bits desenvolvida pela Digital Equipment Corp. nas décadas de 70 e 80. Isso se transformou em um marco importante, pois especialistas da época acreditavam que os sistemas operacionais eram muito complexos para usarem esse modelo de programação. Dessa forma, o Unix ganhou no quesito ‘portabilidade” (no sentido da sua capacidade de ser adaptado), já que agora podia trabalhar com múltiplas plataformas.
 
-MATURIDADE
+A AT&T começou a distribuir o Unix para outras companhias em 1977 e expandiu ainda mais o mercado do SO, adaptado para marcas como a Solaris e a Sequent. Nos anos seguintes, a popularidade da plataforma cresceu ainda mais e ajudou a produzi
 
-Os porquinhos-da-índia geralmente atingem a maturidade sexual por volta dos 2 a 3 meses de idade,
+outros sistemas derivados, como BSD do Grupo de Pesquisa de Sistemas Computacionais da Universidade da Califórnia e o Tru64 para a arquitetura de microprocessador Alpha.
 
-mas isso pode variar um pouco dependendo da raça e do indivíduo. Aos 2 meses, muitos porquinhos já podem ser sexualmente maduros, e é aconselhável separar machos e fêmeas para evitar a reprodução indesejada. No quarto mês de vida, eles chegam a fase adulta, onde o macho pesa cerca de 1kg e as fêmeas entre 800g e 900g
+Hoje em dia, ainda há servidores modernos e outros dispositivos que usam sistemas operacionais baseados em Unix, a lista inclui o macOS, o BSD, o Linux e o Android (que é baseado no Linux).
 
-O Porquinho da Índia é um animal muito ativo na fase adulta, mas a partir dos dois anos de idade ele se tona mais calmo.
+Multiusuário
 
- 
+O Unix também foi o primeiro SO a trazer a possibilidade de mais de um usuário utilizar a mesma máquina ao mesmo tempo. Isso era alcançado normalmente por meio de terminais que eram conectados ao mesmo computador.
 
-CUIDADOS COM A SAÚDE
+Exemplos de sistemas Unix
 
-Depois chegam a terceira idade, os porquinhos da índia ficam mais suscetíveis a doenças. Eles costumam sofrer com artrites, cataratas e doenças causadas pela ausência de vitamina C, pois seu organismo não produz a substância.
+Ao longo dos anos, foram desenvolvidos diversos sistemas derivados e adaptados do núcleo principal do Unix devido ao seu alto nível de adaptabilidade. Confira alguns exemplos abaixo:
 
-Os cuidados com a saúde dos porquinhos-da-índia são cruciais para garantir uma vida longa e feliz para esses adoráveis animais de estimação. Aqui estão alguns aspectos importantes a serem considerados:
+Amiga Unix: Lançado em 1990 pela empresa Commodore-Amiga como um port completo do UNIX System V;
+COSIX: Sistema operacional chinês lançado em 1989 portado do UNIX System V;
+DG/UX: Desenvolvido para a linha de microcomputadores Eclipse MV da companhia Data Genetal em 1985;
+SINIX: Chegou ao mercado em 1984 pela empresa Siemens Nixdorf;
+Tru64 UNIX: Sistema de 64 bits de código fechado e disponibilizado em 1992.
 
-Alimentação Adequada:
+O que é um sistema operacional tipo Unix?
 
-Uma vez que o organismo deles não produz a substância da vitamina C, é necessário que seus donos tenham a atenção voltada para a alimentação, dando alimentos ricos em vitamina C.
-A MEGAZOO tem a melhor alimento do mercado que diferente de outras marcas, a MEGAZOO tem um alimento exclusivo para essa espécie, a Extrusada para Porquinho da Índia, que é um alimento completo e balanceado que pode ser oferecidos com única fonte de alimentação.
-A MEGAZOO pensando no enriquecimento ambiental do porquinho da índia, lançou o Sticks Porquinho da Índia, que é um bastão com uma mistura de sementes, feno e outros nutrientes que podem ser deixado na ambiente do porquinho da índia por até 24h exposto.
-Feno de Qualidade: O feno deve ser uma parte essencial da dieta, fornecendo fibras necessárias para a saúde digestiva.
-Vegetais Frescos: Ofereça uma variedade de vegetais frescos e coloridos, ricos em nutrientes. Evite excesso de frutas, pois são ricas em açúcar.
-A alimentação interfere muito em quantos anos os porquinhos da índia vivem. Capim e feno e devem ser disponibilizados a livre demanda 24h por dia. Verduras e legumes podem ser servidos crus ou no vapor como forma da petisco e enriqueciemento ambiental.
+Um SO que foi planejado para se comportar e funcionar de uma maneira similar ao Unix, mas que não foi derivado ou portado diretamente dele é chamado de “tipo Unix”. Esses sistemas são baseados na arquitetura do Unix e normalmente trazem compatibilidade com a plataforma, além de incluir recursos e comandos semelhantes.
 
-Água Limpa e Fresca:
+Alguns exemplos de sistemas tipo Unix são:
 
-Certifique-se de que os porquinhos sempre tenham acesso a água limpa e fresca. Isso é crucial para a hidratação e a saúde geral.
-Ambiente Limpo:
-
-Mantenha a gaiola limpa, removendo fezes e urina regularmente. Um ambiente limpo ajuda a prevenir problemas de saúde, como infecções urinárias.
-Exercício e Estimulação:
-
-Porquinhos-da-índia precisam de espaço para se exercitar. Forneça um local seguro e espaçoso para brincar e explore regularmente fora da gaiola.
-Higiene Dental:
-
-Problemas dentários são comuns em porquinhos-da-índia. Forneça alimentos fibrosos e, se necessário, consulte um veterinário para cortar os dentes.
-Saúde Reprodutiva:
-
-Se você tem ambos os sexos, considere a esterilização ou castração para evitar gestações indesejadas e problemas de saúde relacionados à reprodução.
-Visitas ao Veterinário:
-
-Leve seu porquinho-da-índia para exames veterinários regulares. Veterinários especializados em animais exóticos podem fornecer orientações específicas para a saúde desses pequenos roedores.
-Observação de Sinais de Doença:
-
-Esteja atento a sinais de doença, como mudanças no apetite, comportamento anormal, problemas respiratórios, pelos eriçados ou qualquer sinal de desconforto.
-Banhos e Escovação:
-
-Porquinhos-da-índia geralmente não precisam de banhos frequentes, mas a escovação regular pode ajudar a manter a pelagem limpa e prevenir problemas de pelo emaranhado.
-Interação Social:
-
-Porquinhos-da-índia são animais sociais. Se possível, tenha mais de um para evitar solidão. No entanto, faça as introduções de maneira cuidadosa.
-COMPORTAMENTO
-
-É um animal com muita energia, é necessário que ele tenha uma vida muito ativa. Recomendado ter brinquedos de materiais macios para entreter e fazê-lo com que gaste a sua energia acumulada.
-
-Comportamento Social: Os porquinhos-da-índia são animais sociais e, à medida que atingem a maturidade, podem mostrar sinais de estabelecer hierarquias sociais dentro de grupos. Isso pode se manifestar em pequenas disputas ou comportamentos territoriais.
-
-Vocalizações e Comunicação: Durante a maturidade, eles podem tornar-se mais vocais, emitindo diferentes tipos de sons para se comunicar. Isso inclui guinchos de felicidade, ruídos de chilrear quando estão curiosos e até mesmo alguns grunhidos ou sons mais graves quando estão desconfortáveis.
-
-Exploração e Curiosidade: A maturidade muitas vezes traz uma maior curiosidade e interesse no ambiente ao redor. Eles podem se tornar mais ativos e exploradores, mostrando uma variedade de comportamentos enquanto se movem e interagem com o espaço.
-
- 
-
-Cuidados Especiais na Maturidade:
-
-Alimentação Balanceada: Durante a maturidade, uma dieta balanceada continua sendo crucial. Forneça feno de qualidade, vegetais frescos, pellets específicos para porquinhos-da-índia e certifique-se de evitar alimentos prejudiciais.
-
-Ambiente Adequado: Ofereça um ambiente espaçoso e enriquecido com brinquedos, esconderijos e áreas para explorar. A interação social também é vital, então, se possível, considere ter mais de um porquinho para evitar a solidão.
-
-Monitoramento da Saúde Reprodutiva: Se você possui ambos os sexos, é importante monitorar a saúde reprodutiva. Se você não planeja criar, considere a esterilização ou castração para evitar gestações indesejadas e possíveis complicações de saúde.
-
-Lembrando que a maturidade dos porquinhos-da-índia é uma fase normal de desenvolvimento e, ao entender suas necessidades específicas, você estará melhor preparado para oferecer um ambiente saudável e enriquecedor para esses adoráveis animais de estimação.
-
-Lembre-se, a prevenção é essencial quando se trata da saúde dos porquinhos-da-índia. Se notar qualquer sinal de doença ou comportamento incomum, consulte imediatamente um veterinário especializado em animais exóticos para um diagnóstico e tratamento adequados.
-
-É de extrema importância manter em dia suas idas ao veterinário.
+Linux: SO de código aberto lançado em 1991 e usado até hoje;
+macOS: Chegou ao mercado em 2001 pela Apple e está presente em aparelhos da marca atualmente;
+BSD: Desenvolvido pelo Computer Systems Research Group e lançado em 1978;
+SerenityOS: Sistema operacional de código aberto para desktop lançado em 2018;
+DEMOS: Criado pela União Soviética em 1982 e derivado 

@@ -24,7 +24,7 @@ def open_file(file_path):
     except Exception as e:
         return f"Error: {e}"
 
-arquivo = sys.argv[1]
+arquivo = "fisio.txt"
 
 texto = open_file(arquivo)
 filename = os.path.basename(arquivo)
