@@ -36,7 +36,7 @@ document.getElementById("btn-login").addEventListener("click", async (event) => 
 
         alert(result.message); // Exibe mensagem de sucesso
 
-        window.location.href = 'telainicial.html'; // Redirecionar para a página inicial
+        window.location.href = '/front/telainicial.html'; // Redirecionar para a página inicial
        } else {
         alert(result.message); // Exibe mensagem de erro
        }
