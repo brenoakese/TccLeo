@@ -58,7 +58,7 @@ else:
     print("Não criou o BD")
     vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
 
-question = "quanto tempo vive um porquinho da india?"
+question = "qual o tamanho do dentinho do porquinho da india?"
 
 docs = vectorstore.similarity_search_with_score(question, k=4)
 
