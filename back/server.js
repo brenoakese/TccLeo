@@ -1,8 +1,8 @@
-//import express from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
-const express = require('express');
+//const express = require('express');
 
 
 const { Pool } = pkg;
@@ -231,11 +231,6 @@ app.get('/user-info', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-
 
 // ATUALIZAR INFORMAÇÕES DA CONTA
 
@@ -349,9 +344,11 @@ app.post('/delete-account', async (req, res) => {
 
 
 
-const uploadTxtUser = require('/front/js/uploadTxt.js')
+//const uploadTxtUser = require('/front/js/uploadTxt.js')
+import uploadTxtUser from '../back/middleawares/uploadTxt.js'; 
 
-app.post("upload-txt", uploadTxtUser.single('txt'), async(req, res) => {
+
+app.post("/upload-txt", uploadTxtUser.single('txt'), async(req, res) => {
 
     if(req.file){
         return res.json({

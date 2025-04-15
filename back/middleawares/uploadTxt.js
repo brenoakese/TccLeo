@@ -1,9 +1,10 @@
-const multer = require('multer');
+//onst multer = require('multer');
+import multer from 'multer';
 
-module.exports = (multer({
+const upload = (multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, './back/uploads')
+            cb(null, './public/upload')
         },
         filename: (req, file, cb) => {
             cb(null, Date.now().toString + '-' + file.originalname)
@@ -18,4 +19,6 @@ module.exports = (multer({
 
         return(cb, false);
     }
-}))
+}));
+
+export default upload;
