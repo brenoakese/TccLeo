@@ -1,19 +1,8 @@
-import express from 'express';
+ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
-
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function(req, file, sb) {
-        cb(null, '/uploads');
-    },
-    filename: function(req, file, cb) {
-
-        cb(null, file.originalname );
-    }, 
-});
-const upload = multer({ dest: storage  });
+// const express = require('express');
 
 
 const { Pool } = pkg;
@@ -356,19 +345,28 @@ app.post('/delete-account', async (req, res) => {
 
 
 // ARQUIVOS
-// CONFIGURAÇÃO DE ARMAZENAMENTO 
+// CONFIGURAÇÃO DE ARMAZENAMENTO E UPLOAD
 
 
-app.get('/', (req, res) => {
-    res.send("Hello World!");
-})
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    res.json(req.file);
+const uploadTxtUser = require('/front/js/uploadTxt.js')
+
+app.post("upload-txt", uploadTxtUser.single('txt'), async(req, res) => {
+
+    if(req.file){
+        return res.json({
+            erro: false,
+            message: "Upload realizado com sucesso!"
+        });
+    }
+
+    return res.status(400).json({
+        erro: true,
+        message: "Erro no upload..."
+    });
+
 });
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+app.listen(3000, () => {
+    console.log(`Servidor rodando na porta ${PORT}`)
 });

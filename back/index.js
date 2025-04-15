@@ -102,5 +102,3 @@ document.getElementById("btn-esqueceu-cadastro").addEventListener("click", async
     
     window.location.href = 'esqueceusenha.html';
 });
-
-

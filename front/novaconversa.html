@@ -48,13 +48,13 @@
                 <h2 class="title title-txt"> Carregar .TXT </h2>
                 <p class="description description-txt"> Insira seu arquivo .txt e carregue seus dados, para criar um chat. </p>
                 
-                <form id="form-upload-txt">
+                <form id="form-upload-txt" enctype="multipart/form-data" method="post">
                     <label class="div-input" for="upload">
                         <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;""></i>
                         <span> Clique para upload </span>
-                        <input type="file" name="file" id="upload" accept=".txt" style="display: none;" />
+                        <input type="file" name="uploaded_file" id="upload" accept=".txt" style="display: none;" />
                     </label>
-                    <button type="submit" class="btn btn-upload">Enviar</button>
+                    <button type="submit" class="btn btn-upload"> Enviar </button>
                 </form>
 
             </div> <!-- column carregar .txt -->
