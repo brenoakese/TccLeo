@@ -1,8 +1,8 @@
- import express from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
-// const express = require('express');
+const express = require('express');
 
 
 const { Pool } = pkg;
