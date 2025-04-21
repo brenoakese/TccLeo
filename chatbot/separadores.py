@@ -15,7 +15,7 @@ def open_file(file_path):
     except Exception as e:
         return f"Error: {e}"
     
-arquivo = "fisio.txt"
+arquivo = "pug.txt"
 
 texto = open_file(arquivo)
 filename = os.path.basename(arquivo)

@@ -31,7 +31,7 @@ def open_file(file_path):
         return f"Error: {e}"
     
 if criar_db:
-    arquivo = "fisio.txt"
+    arquivo = "pug.txt"
 
     texto = open_file(arquivo)
     filename = os.path.basename(arquivo)
@@ -58,7 +58,7 @@ else:
     print("Não criou o BD")
     vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
 
-question = "em que ano nasceu arqueduque Fracisco Ferdinando?"
+question = "Quais frutas o pug pode comer?"
 
 docs = vectorstore.similarity_search_with_score(question, k=4)
 
