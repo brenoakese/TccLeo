@@ -3,7 +3,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
 //const express = require('express');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const { Pool } = pkg;
 
@@ -347,23 +353,43 @@ app.post('/delete-account', async (req, res) => {
 //const uploadTxtUser = require('/front/js/uploadTxt.js')
 import uploadTxtUser from '../back/middleawares/uploadTxt.js'; 
 
+app.use(express.static(__dirname));
 
-app.post("/upload-txt", uploadTxtUser.single('txt'), async(req, res) => {
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, "novaconversa.html"));
+});
 
-    if(req.file){
-        return res.json({
-            erro: false,
-            message: "Upload realizado com sucesso!"
-        });
+app.post("/upload", uploadTxtUser.single('file'), (req, res) => {
+
+    if (!req.file) {
+        return res.status(400).send(`No file uploaded.`);
     }
 
-    return res.status(400).json({
-        erro: true,
-        message: "Erro no upload..."
-    });
+    res.send(`file uploaded: ${req.file.filename}`);
 
 });
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`)
 });
+
+/*
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, "novaconversa.html"));
+});
+
+app.post('/upload-txt', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    res.send('file uploaded.');
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`)
+});
+*/
+
