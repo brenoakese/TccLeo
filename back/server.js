@@ -2,10 +2,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
-//const express = require('express');
 import path from 'path';
-import multer from 'multer';
 import  fileUpload from 'express-fileupload';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
+import filesPayloadExists from './middleware/filesPayloadExists.js';
+import fileExtLimiter from './middleware/fileExtLimiter.js';
+import fileSizeLimiter from './middleware/fileSizeLimiter.js';
+
 
 
 
@@ -392,11 +401,21 @@ app.get('/', (req, res) => {
 
 app.post("/upload",
     fileUpload ({ createParentPath: true }),
+    filesPayloadExists,
+    fileExtLimiter(['.txt']),
+    fileSizeLimiter,
     (req, res) => {
         const files = req.files
         console.log(files)
 
-        return res.json({ status: 'logged', message: 'logged' })
+        Object.keys(files).forEach(key => {
+            const filepath = path.join(__dirname, 'files', files[key].name)
+            files[key].mv(filepath, (err) => {
+                if (err) return res.status(500).json ({ status: "error", message: err })
+            })
+        })
+
+        return res.json({ status: 'success', message: Object.keys(files).toString() })
     }
 );
 

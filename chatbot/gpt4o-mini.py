@@ -4,6 +4,7 @@ from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 from dotenv import load_dotenv
+from utils import latest_file
 
 #Ná Prática:
     #1º Gerar o banco de dados
@@ -31,7 +32,7 @@ def open_file(file_path):
         return f"Error: {e}"
     
 if criar_db:
-    arquivo = "pug.txt"
+    arquivo = latest_file()
 
     texto = open_file(arquivo)
     filename = os.path.basename(arquivo)
@@ -58,7 +59,7 @@ else:
     print("Não criou o BD")
     vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
 
-question = "Quais frutas o pug pode comer?"
+question = "O que o pug nao pode comer?"
 
 docs = vectorstore.similarity_search_with_score(question, k=4)
 

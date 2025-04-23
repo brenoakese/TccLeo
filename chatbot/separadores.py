@@ -1,5 +1,6 @@
 import os
-from langchain_text_splitters import RecursiveCharacterTextSplitter, CharacterTextSplitter
+from langchain_text_splitters import CharacterTextSplitter
+from utils import latest_file
 
 #separa o texto em partes de tantos caracteres (no caso, 1000)
 chunk_size = 100
@@ -15,7 +16,7 @@ def open_file(file_path):
     except Exception as e:
         return f"Error: {e}"
     
-arquivo = "pug.txt"
+arquivo = latest_file()
 
 texto = open_file(arquivo)
 filename = os.path.basename(arquivo)

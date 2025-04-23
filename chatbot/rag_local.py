@@ -1,11 +1,9 @@
 import os
-from langchain_text_splitters import RecursiveCharacterTextSplitter, CharacterTextSplitter
-#Chroma = banco de dados local
+from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
-from langchain_community.embeddings import GPT4AllEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
-import sys
+from utils import latest_file
 
 load_dotenv()
 
@@ -24,7 +22,7 @@ def open_file(file_path):
     except Exception as e:
         return f"Error: {e}"
 
-arquivo = "pug.txt"
+arquivo = latest_file()
 
 texto = open_file(arquivo)
 filename = os.path.basename(arquivo)
