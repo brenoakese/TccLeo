@@ -4,12 +4,10 @@ import cors from 'cors';
 import pkg from 'pg';
 //const express = require('express');
 import path from 'path';
-import { fileURLToPath } from 'url';
+import multer from 'multer';
+import  fileUpload from 'express-fileupload';
 
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const { Pool } = pkg;
 
@@ -350,46 +348,58 @@ app.post('/delete-account', async (req, res) => {
 
 
 
-//const uploadTxtUser = require('/front/js/uploadTxt.js')
-import uploadTxtUser from '../back/middleawares/uploadTxt.js'; 
-
-app.use(express.static(__dirname));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "novaconversa.html"));
-});
-
-app.post("/upload", uploadTxtUser.single('file'), (req, res) => {
-
-    if (!req.file) {
-        return res.status(400).send(`No file uploaded.`);
-    }
-
-    res.send(`file uploaded: ${req.file.filename}`);
-
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`)
-});
-
 /*
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "back/uploads");
+    },
+    filename: (req, file, cb) => {
+        cb(
+            null,
+            file.filename + "-" + Date.now() + path.extname(file.originalname)
+        );
+    },
+});
+
+const upload = multer({ storage });
+
 app.use(express.static(__dirname));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "novaconversa.html"));
-});
+const upload = multer({
+    storage: storage, 
+    limits: null,
+    fileFilter: (req, file, cb) => {
+        const allowedMime = ['text/plain'];
+        const allowedExt = /\.txt$/;
 
-app.post('/upload-txt', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
+        const isMimeValid = allowedMime.includes(file.mimetype);
+        const isExtValid = allowedExt.test(path.extname(file.originalname).toLowerCase());
 
-    res.send('file uploaded.');
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`)
+        if (isMimeValid && isExtValid) {
+            return cb(null, true);
+        } else {
+            cb("Error: apenas .txt");
+        }
+    },
 });
 */
 
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, "novaconversa.html"));
+});
+
+app.post("/upload",
+    fileUpload ({ createParentPath: true }),
+    (req, res) => {
+        const files = req.files
+        console.log(files)
+
+        return res.json({ status: 'logged', message: 'logged' })
+    }
+);
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`)
+}); 
