@@ -63,6 +63,8 @@ question = "O que o pug nao pode comer?"
 
 docs = vectorstore.similarity_search_with_score(question, k=4)
 
+
+# Bot padrão
 def enviar_pergunta(pergunta):
     try:
         # Envia a pergunta para a API
@@ -85,3 +87,24 @@ def enviar_pergunta(pergunta):
 resposta = enviar_pergunta(question + " \nUse os dados a seguir como referência para a resposta" + str(docs))
 
 print("Resposta:", resposta)
+
+
+# Bot informal
+def enviar_pergunta_informal(pergunta):
+    try:
+        client = OpenAI(api_key=api_key)
+        resposta = client.chat.completions.create(
+            model="gpt4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Você é um assistente super descontraído, usa gírias, fala de forma informal e direta, como se estivesse conversando com um amigo. Seja simpático e bem humorado, mas informativo."
+                },
+                {"role": "user", "content": pergunta}
+            ]
+        )
+        resposta_texto = resposta.choices[0].message.content
+        return resposta_texto
+    
+    except Exception as e:
+        return f"Ocorreu um erro: {e}"
