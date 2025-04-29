@@ -24,3 +24,13 @@ document.getElementById("btn-send-question").addEventListener("click",  async (e
 
     
 });
+
+
+
+let chat = document.querySelector('#chat');
+let input = document.querySelector('#input');
+let botaoEnviar = document.querySelector('#botao-enviar');
+
+async function enviarMensagem() {
+    
+}
