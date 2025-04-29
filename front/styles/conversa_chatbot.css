@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    background: linear-gradient(to bottom, #58af9b, #FFFFFF);
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    padding: 0 2rem;
+}
+
+@media screen and (min-width: 1400px) {
+    .container {
+        padding: 0 calc((100vw - 1200px) / 2);
+    }
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5rem;
+    border-bottom: 1px solid #FFF;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+   
+
+/* Chatbox */
+
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 10rem - 5rem);
+
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.chat::-webkit-scrollbar {
+    display: none;
+}
+
+.chat__bolha {
+    max-width: calc(100% - 3.5rem);
+    width: fit-content;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-size: 1.375rem;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+@media screen and (min-width: 1400px) {
+    .chat__bolha {
+        max-width: 60%;
+    }
+}
+
+.chat__bolha--bot {
+    background-color: #58af9b;
+}
+
+.chat__bolha--bot::after {
+    content: "";
+    display: block;
+
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 10px 10px 10px 0;
+
+    position: absolute;
+    top: 0;
+    right: calc(-2.5rem - 1rem);
+
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.chat__bolha--usuario {
+    border: 1px solid #77b3d4c7;;
+    align-self: flex-end;
+}
+
+.chat__bolha--usuario::before {
+    content: "";
+    display: block;
+
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 10px 10px 0 10px;
+
+    position: absolute;
+    top: 0;
+    left: calc(-2.5rem - 1rem);
+
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.entrada {
+    height: 10rem;
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: stretch;
+    align-items: center;
+    border-top: 1px solid #fff;
+}
+
+.entrada__container {
+    display: flex;
+    width: 100%;
+    gap: 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+
+
+    background-color: transparent;
+    border-radius: 4rem;
+}
+
+.entrada__input {
+    height: 3rem;
+    width: 100%;
+    border-radius: 21px;
+    background-color: transparent;
+    font-size: 1.375rem;
+    color: #000;
+    padding-left: 20px;
+    overflow: hidden;
+}
+
+.entrada__input::placeholder {
+    color: #676767;
+}
+
+
+/* Icons */
+
+
+.bot-img {
+    border-radius: 50%;
+    font-size: 25px;
+    color: #fff;
+}
+
+.send-img{
+    font-size: 25px;
+    background-color: transparent;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    color: #7f8c8d;
+}

@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    outline: none;
+    border: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    background-color: #ecf0f1;
+}
+
+.container {
+    padding: 0 2rem;
+}
+
+@media screen and (min-width: 1400px) {
+    .container {
+        padding: 0 calc((100vw - 1200px) / 2);
+    }
+}
+
+/* Chatbox */
+
+.chat {
+    width: 400px;
+    height: 450px;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 10rem - 5rem);
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.chat::-webkit-scrollbar {
+    display: none;
+}
+
+.chat__bolha {
+    max-width: calc(100% - 3.5rem);
+    width: fit_content;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-size: 1.375rem;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+@media screen and (min-width: 1400px) {
+    .chat__bolha {
+        max-width: 60%;
+    }
+}
+
+.chat__bolha--bot {
+    background-color: #58af9b;
+}
+
+.chat__bolha--bot::after {
+    content: "";
+    display: block;
+
+    height: 2.5rem;
+    width: 2.5rem;
+
+    position: absolute;
+    top: 0;
+    right: calc(-2.5rem - 1rem);
+
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.chat__bolha--usuario {
+    border: 1px solid #77b3d4c7;
+    align-self: flex-end;
+}
+
+.chat__bolha--usuario::before {
+    content: "";
+    display: block;
+
+    height: 2.5rem;
+    width: 2.5rem;
+
+    position: absolute;
+    top: 0;
+    left: calc(-2.5rem - 1rem);
+
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.entrada {
+    height: 10rem;
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: stretch;
+    align-items: center;
+    border-top: 1px solid #1C5296;
+}
+
+.chat-input {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 65px;
+    background-color: #fff;
+    padding: 15px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+}
+
+.chat-input input {
+    width: calc(100% - 40px);
+    height: 100%;
+    background-color: #4f5d7321;
+    border-radius: 50px;
+    color: #000;
+    font-size: 1.0em;
+    padding: 0 15px;
+}
+
+.entrada__container {
+    display: flex;
+    width: 100%;
+    gap: 0.8rem;
+    justify-content: space-between;
+
+    padding: 0 0.5rem;
+
+    background-color: #1C5296;
+    border: 1px solid #0C305C;
+    border-radius: 4rem;
+}
+
+.entrada__input {
+    height: 4rem;
+    width: 100%;
+
+    background-color: transparent;
+    font-size: 1.375rem;
+    color: #CED3E0;
+    padding-left: 20px;
+}
+
+.entrada__input::placeholder {
+    color: #CED3E0;
+}
+
+
+
+/* Cliente */
+
+.bot {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 80px;
+    background-color: #58af9b;
+    padding: 15px;
+}
+
+.bot-img {
+    border-radius: 50%;
+    font-size: 25px;
+    color: #fff;
+}
+
+.bot-info {
+    color: #fff;
+    padding: 15px;
+}
+
+.bot-info p {
+    color: #008000;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+/* Sessao do Chat */
+
+.chats {
+    width: 100%;
+    padding: 0 15px;
+    color: #fff;
+    position: relative;
+    font-size: 0.9em;
+}
+
+.bot-chat {
+    width: 60%;
+    word-wrap: break-word;
+    background-color: #58af9b;
+    padding: 7px 10px;
+    border-radius: 10px 10px 10px 0;
+    margin: 10px 0;
+}
+
+.person-chat {
+    width: 60%;
+    word-wrap: break-word;
+    background-color: #77b3d4c7;
+    padding: 7px 10px;
+    border-radius: 10px 10px 0 10px;
+    margin: 5px 0 5px auto;
+}
+
+/* Sessao de Input */
+
+.send-btn {
+    width: 80px;
+    height: 40px;
+    background-color: transparent;
+    overflow: hidden;
+    position: relative;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    font-size: 20px;
+    color: #7f8c8d;
+}
+
+.send-btn:active {
+    transform: scale(0.85);
+}
+
+.send-btn img{
+    width: 100%;
+    height: 100%;
+}
