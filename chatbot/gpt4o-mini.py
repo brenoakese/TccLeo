@@ -5,17 +5,17 @@ from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 from dotenv import load_dotenv
 from utils import latest_file
-from flask import Flask, request, jsonify
+from flask_cors import CORS
+from flask import Flask,render_template, request, Response
+from rag_local import *
+from separadores import *
 
 
 app = Flask(__name__)
+CORS(app)
 
 
-@app.route("/ask", methods=["POST"])
-def handle_question():
-    data = request.get_json()
-    question  = data.get ("message" ,"")
-
+def bot():
     #Ná Prática:
         #1º Gerar o banco de dados
         #2º Busca por similaridade
@@ -69,9 +69,8 @@ def handle_question():
         print("Não criou o BD")
         vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
 
-    print(f"Recebido do Node.js: {question}")
 
-    # question = "O que o pug nao pode comer?"
+    question = "O que o pug nao pode comer?"
 
     docs = vectorstore.similarity_search_with_score(question, k=4)
 
@@ -96,11 +95,9 @@ def handle_question():
         except Exception as e:
             return f"Ocorreu um erro: {e}"
 
-    # resposta = enviar_pergunta(question + " \nUse os dados a seguir como referência para a resposta" + str(docs))
-    resposta = f"Resposta para: {question}"
+    resposta = enviar_pergunta(question + " \nUse os dados a seguir como referência para a resposta" + str(docs))
 
-    #print("Resposta:", resposta)
-    return jsonify({ "response": resposta })
+    print("Resposta:", resposta)
 
 
     # Bot informal
@@ -124,5 +121,16 @@ def handle_question():
     #        return f"Ocorreu um erro: {e}"
 
 
+@app.route("/chat", methods=["POST"])
+def chat():
+    prompt = request.json["msg"]
+    resposta = bot(prompt)
+    texto_reposta = resposta.content[0].text.value
+    return texto_reposta
+
+@app.route("/")
+def home():
+    return render_template("conversa_chatbot.html")
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(debug = True)
