@@ -98,6 +98,10 @@
                         h6.textContent = json?.message
 
                         console.log(json)
+
+                        if (json.status.trim().toLowerCase() === 'sucesso') {
+                            window.location.href = 'conversa_chatbot.html'
+                        }
                     }
 
                     form.addEventListener('submit', (e) => {
