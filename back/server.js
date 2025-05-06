@@ -429,13 +429,3 @@ app.listen(PORT, () => {
 
 
 
-app.post("/user-question", (req, res) => {
-    const { data } = req.body
-
-    if(!data) {
-        return res.status(400).json({ message: 'Não há mensagem' });
-    }
-
-    const response = await fetch("")
-}
-)

@@ -5,132 +5,113 @@ from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 from dotenv import load_dotenv
 from utils import latest_file
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask import Flask,render_template, request, Response
+
 from rag_local import *
 from separadores import *
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/chat": {"origins": "*"}})
 
 
-def bot():
-    #Ná Prática:
-        #1º Gerar o banco de dados
-        #2º Busca por similaridade
-        #3º Mandar o resultado da busca por similaridade para a LLM e a sua LLM, vai responder a pergunta
+#Ná Prática:
+    #1º Gerar o banco de dados
+    #2º Busca por similaridade
+    #3º Mandar o resultado da busca por similaridade para a LLM e a sua LLM, vai responder a pergunta
 
-    load_dotenv()
+load_dotenv()
 
-    api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
 
-    chunk_size = 1000
-    percentual_overlap = 0.2
+chunk_size = 500
+percentual_overlap = 0.2
 
-    # Variável criada para caso você já tenha criado um banco de dados ou não, caso não criado, coloque "True"
-    criar_db = True
+# Variável criada para caso você já tenha criado um banco de dados ou não, caso não criado, coloque "True"
+criar_db = True
 
-    def open_file(file_path):
-        try:
-            with open(file_path, "r", encoding="utf-8") as file:
-                contents = file.read()
-            return contents
-        except FileNotFoundError:
-            return "File not found."
-        except Exception as e:
-            return f"Error: {e}"
+def open_file(file_path):
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            contents = file.read()
+        return contents
+    except FileNotFoundError:
+        return "File not found."
+    except Exception as e:
+        return f"Error: {e}"
         
-    if criar_db:
-        arquivo = latest_file()
-
-        texto = open_file(arquivo)
-        filename = os.path.basename(arquivo)
-        metadatas = [{"nome do arquivo": filename}]
-
-
-        text_splitter = CharacterTextSplitter(separator="\n", chunk_size=chunk_size,
-        #text_splitter = RecursiveCharacterTextSplitter(separators=["}\n{"],chunk_size=chunk_size ,
-                                            chunk_overlap=int(chunk_size * percentual_overlap),
-                                            length_function=len,
-                                            is_separator_regex=False,
-                                            )
-
-
-        all_splits = text_splitter.create_documents([texto], metadatas=metadatas)
-        #for index, text in enumerate(all_splits):
-        #    print("#####", index + 1, "#####")
-        #    print(text.page_content)
-        #    print(text.metadata)
-
-        vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
-
-    else:
-        print("Não criou o BD")
-        vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
-
-
-    question = "O que o pug nao pode comer?"
-
-    docs = vectorstore.similarity_search_with_score(question, k=4)
-
-
-    # Bot padrão
-    def enviar_pergunta(pergunta):
-        try:
-            # Envia a pergunta para a API
-            client = OpenAI(api_key=api_key)
-            resposta = client.chat.completions.create(
-                model="gpt-4o-mini", # Especifica o modelo a ser utilizado
-                messages=[
-                    {"role": "user", "content": pergunta}
-                ]
-            )
-
-            # Extrai a resposta gerada pelo GPT-4
-            resposta_texto = resposta.choices[0].message.content
-
-            return resposta_texto
+if criar_db:
+    arquivo = latest_file()
         
-        except Exception as e:
-            return f"Ocorreu um erro: {e}"
-
-    resposta = enviar_pergunta(question + " \nUse os dados a seguir como referência para a resposta" + str(docs))
-
-    print("Resposta:", resposta)
+    texto = open_file(arquivo)
+    filename = os.path.basename(arquivo)
+    metadatas = [{"nome do arquivo": filename}]
 
 
-    # Bot informal
-    #def enviar_pergunta_informal(pergunta):
-    #    try:
-    #        client = OpenAI(api_key=api_key)
-    #        resposta = client.chat.completions.create(
-    #            model="gpt4o-mini",
-    #            messages=[
-    #                {
-    #                    "role": "system",
-    #                    "content": "Você é um assistente super descontraído, usa gírias, fala de forma informal e direta, como se estivesse conversando com um amigo. Seja simpático e bem humorado, mas informativo."
-    #                },
-    #                {"role": "user", "content": pergunta}
-    #            ]
-    #        )
-    #        resposta_texto = resposta.choices[0].message.content
-    #        return resposta_texto
-    #    
-    #    except Exception as e:
-    #        return f"Ocorreu um erro: {e}"
+    text_splitter = CharacterTextSplitter(separator="\n", chunk_size=chunk_size,
+                                        chunk_overlap=int(chunk_size * percentual_overlap),
+                                        length_function=len,
+                                        is_separator_regex=False,
+                                        )
 
+
+    all_splits = text_splitter.create_documents([texto], metadatas=metadatas)
+
+    vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
+
+else:
+    vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
+
+
+# Bot padrão
+def enviar_pergunta(pergunta):
+    try:
+        # Envia a pergunta para a API
+        client = OpenAI(api_key=api_key)
+        resposta = client.chat.completions.create(
+            model="gpt-4o-mini", # Especifica o modelo a ser utilizado
+            messages=[
+                {"role": "user", "content": pergunta}
+            ]
+        )
+
+        # Extrai a resposta gerada pelo GPT-4
+        return resposta.choices[0].message.content
+
+    except Exception as e:
+        return f"Ocorreu um erro: {e}"
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    prompt = request.json["msg"]
-    resposta = bot(prompt)
-    texto_reposta = resposta.content[0].text.value
-    return texto_reposta
+    data = request.get_json()
+    question = data.get("pergunta")
 
-@app.route("/")
-def home():
-    return render_template("conversa_chatbot.html")
+    if not question:
+        return jsonify({ "erro": "Pergunta não fornecida" }), 400
+    
+    docs = vectorstore.similarity_search_with_score(question, k=4)
+
+    # Obter contexto dos documentos retornados
+    contexto = "\n\n".join([doc[0].page_content for doc in docs])
+
+    # Criar o prompt com base no contexto e na pergunta
+    prompt = f"""
+    Responda à pergunta com base nas informações fornecidas no contexto abaixo. 
+    Se a resposta não estiver no contexto, diga que não encontrou essa informação.
+
+    ### CONTEXTO
+
+    {contexto}
+
+    ### PERGUNTA
+
+    {question}
+    """
+
+    resposta = enviar_pergunta(prompt)
+    return jsonify({ "resposta": resposta })
+
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug=True, host="127.0.0.1", port=5000)

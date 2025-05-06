@@ -17,21 +17,26 @@ async function enviarMensagem() {
     vaiParaFinalDoChat();
     novaBolhaBot.innerHTML = "Analisando..."
 
-    // Envia requisição com a mensagem para a API do ChatBot
-    const resposta = await fetch ("http://127.0.0.1:3000/chat", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 'msg': mensagem }),
-    });
 
-    const textoDaResposta = await resposta.text();
-    console.log(textoDaResposta);
-    novaBolhaBot.innerHTML = textoDaResposta.replace(/\n/g, '<br>');
-    vaiParaFinalDoChat();
+    try {
+        // Envia requisição com a mensagem para a API do ChatBot
+        const resposta = await fetch ("http://127.0.0.1:5000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 'pergunta': mensagem }),
+        });
 
-}
+        const data = await resposta.json();
+        console.log(data);
+        novaBolhaBot.innerHTML = data.resposta.replace(/\n/g, '<br>');
+        vaiParaFinalDoChat();
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        novaBolhaBot.innerHTML = "Desculpe, ocorreu um erro.";
+    }
+} 
 
 function criarBolhaUsuario() {
 

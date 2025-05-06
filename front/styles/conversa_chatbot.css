@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url(_reset.css);
 
 
 body {
@@ -54,13 +55,14 @@ body {
 }
 
 .chat__bolha {
-    max-width: calc(100% - 3.5rem);
-    width: fit-content;
+    width: 60%;
+    /* width: fit-content; */
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 10px;
     font-size: 1.375rem;
     margin: 1.5rem 0;
     position: relative;
+    background-color: #77b3d4;
 }
 
 @media screen and (min-width: 1400px) {
@@ -71,6 +73,8 @@ body {
 
 .chat__bolha--bot {
     background-color: #58af9b;
+    border-radius: 10px 10px 10px 0;
+
 }
 
 .chat__bolha--bot::after {
@@ -79,7 +83,6 @@ body {
 
     height: 2.5rem;
     width: 2.5rem;
-    border-radius: 10px 10px 10px 0;
 
     position: absolute;
     top: 0;
@@ -101,7 +104,6 @@ body {
 
     height: 2.5rem;
     width: 2.5rem;
-    border-radius: 10px 10px 0 10px;
 
     position: absolute;
     top: 0;
@@ -124,11 +126,12 @@ body {
 
 .entrada__container {
     display: flex;
-    width: 100%;
     gap: 0.8rem;
     justify-content: space-between;
+    width: 100%;
+    
+    padding: 0 0.5rem;
     align-items: center;
-
 
     background-color: transparent;
     border-radius: 4rem;
@@ -137,7 +140,9 @@ body {
 .entrada__input {
     height: 3rem;
     width: 100%;
+    
     border-radius: 21px;
+    border: 2px solid #58af9b;
     background-color: transparent;
     font-size: 1.375rem;
     color: #000;
