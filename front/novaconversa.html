@@ -67,6 +67,7 @@
                         <input type="file" id="myFiles" accept=".txt" multiple />
                         <!-- for multiple files uploads -->
                         <button type="submit"> Upload File </button>
+                        <button id="btn-irchat" > Ir para o chat </button>
                     </label> 
                 </form>
 
@@ -98,10 +99,6 @@
                         h6.textContent = json?.message
 
                         console.log(json)
-
-                        if (json.status.trim().toLowerCase() === 'sucesso') {
-                            window.location.href = 'conversa_chatbot.html'
-                        }
                     }
 
                     form.addEventListener('submit', (e) => {
@@ -146,6 +143,7 @@
     </div> <!-- container total --> 
 
     <script src="js/barraopcoes.js"></script>
+    <script src="js/telanovaconversa.js"></script>
 
 </body>
 </html>

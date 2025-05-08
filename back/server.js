@@ -428,7 +428,7 @@ app.post("/upload",
                 exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
                     if (error) {
                         console.error(`Erro ao executar Python: ${error.message}`);
-                        return res.status(500).json({ status: "erro", message: "Erro ao rodar o Python." });
+                        return res.status(500).json({ status: "error", message: "Erro ao rodar o Python." });
                     }
                     if (stderr) {
                         console.warn(`stderr do Python: ${stderr}`);
@@ -436,7 +436,7 @@ app.post("/upload",
                     console.log(`stdout do Python:\n${stdout}`);
 
                     return res.status(200).json({
-                        status: "sucesso",
+                        status: "success",
                         message: uploadedFileNames.join(', '),
                         python_output: stdout
                     });

@@ -6,7 +6,7 @@
   "scripts": {
     "start-node": "node back/server.js",
     "start-python": "python3 chatbot/gpt4o-mini.py",
-    "start-all": "concurrently \"npm run start-node\" \"npm run start-python\""
+    "start-all": "npm run start-node"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
