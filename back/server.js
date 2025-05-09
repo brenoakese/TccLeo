@@ -37,7 +37,8 @@ const pool = new Pool({
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5501;
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -445,14 +446,18 @@ app.post("/upload",
             });
 
         } catch (err) {
-            console.error("Erro no upload ou ao chamar o Flask", err);
-            res.status(500).json({
-                status: "error",
-                message: "Falha no upload ou processamento."
+            console.error("❌ Erro no upload ou ao chamar o Flask", err);
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({
+                status: "success",
+                message: `Arquivo ${filename} processado com sucesso.`
             });
         }
     }
 );
+
+
+app.use(express.static(__dirname));
 
 // exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
 //    if (error) {

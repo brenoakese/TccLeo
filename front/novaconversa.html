@@ -70,25 +70,50 @@
                             }
                         });
 
-                        const response = await fetch('http://127.0.0.1:3000/upload', {
+                        try {
+
+                            const response = await fetch('http://127.0.0.1:3000/upload', {
                             method: 'POST',
                             body: formData
-                        });
+                            });
 
-                        const json = await response.json();
 
-                        const h5 = document.querySelector('h5');
-                        h5.textContent = `Status: ${json?.status}`;
+                            console.log("Raw response", response);
+                            if (!response.ok) {
+                                const text = await response.text();
+                                console.error("Erro HTTP:", response.status, text);
+                                alert("Erro no servidor: " + text);
+                                return;
+                            }
 
-                        const h6 = document.querySelector('h6');
-                        h6.textContent = json?.message;
 
-                        console.log(json);
 
-                        // Redireciona automaticamente para o chat após sucesso
-                        if (json?.status === "success") {
-                            window.location.href = "conversa_chatbot.html";
+                            const json = await response.json();
+                            console.log("Resposta JSON:", json);
+
+
+
+
+                            const h5 = document.querySelector('h5');
+                            h5.textContent = `Status: ${json?.status}`;
+
+                            const h6 = document.querySelector('h6');
+                            h6.textContent = json?.message;
+
+                            console.log("Resposta do upload", json);
+
+                            // Redireciona automaticamente para o chat após sucesso
+                            if (json?.status === "success") {
+                                window.location.href = "conversa_chatbot.html";
+                            } else {
+                                alert("Erro no upload ou carregamento do arquivo pelo Flask: \n" + json?.message);
+                            }
+
+                        } catch (err) {
+                            console.error("Erro no fetch:", err);
+                            alert("Erro de rede ou sao processar JSON: "+ err.message);
                         }
+                        
                     };
 
                     form.addEventListener('submit', (e) => {
