@@ -92,7 +92,7 @@ def chat():
     if not question:
         return jsonify({ "erro": "Pergunta não fornecida" }), 400
     
-    docs = vectorstore.similarity_search_with_score(pergunta, k=4)
+    docs = vectorstore.similarity_search_with_score(question, k=4)
 
     # Obter contexto dos documentos retornados
     contexto = "\n\n".join([doc[0].page_content for doc in docs])
