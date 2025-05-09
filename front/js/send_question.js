@@ -3,9 +3,9 @@ let input = document.querySelector('#input');
 let botaoEnviar = document.querySelector('#botao-enviar');
 
 async function enviarMensagem() {
+    if(input.value.trim() === "") return;
 
-    if(input.value == "" || input.value == null) return;
-    let mensagem = input.value;
+    const mensagem = input.value;
     input.value = "";
 
     let novaBolha = criarBolhaUsuario();
@@ -13,9 +13,29 @@ async function enviarMensagem() {
     chat.appendChild(novaBolha);
 
     let novaBolhaBot = criarBolhaBot();
+    novaBolhaBot.innerHTML = "Analisando..."
     chat.appendChild(novaBolhaBot);
     vaiParaFinalDoChat();
-    novaBolhaBot.innerHTML = "Analisando..."
+    
+
+    // Obter nome do arquivo do localStorage
+    const nomeArquivo = localStorage.getItem("arquivo");
+
+    if (!nomeArquivo) {
+        novaBolhaBot.innerHTML = "Erro: nenhum arquivo carregado.";
+        return;
+    }
+
+
+    
+
+    console.log("ENVIANDO AO FLASK:", {
+        pergunta: mensagem,
+        filename: nomeArquivo
+    });    
+
+
+
 
 
     try {
@@ -25,16 +45,20 @@ async function enviarMensagem() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 'pergunta': mensagem }),
+            body: JSON.stringify({
+                pergunta: mensagem,
+                filename: nomeArquivo
+            }),
         });
 
-        const data = await resposta.json();
-        console.log(data);
-        novaBolhaBot.innerHTML = data.resposta.replace(/\n/g, '<br>');
+        const json = await resposta.json();
+        const textoResposta = json.resposta || json.erro || "Erro desconhecido.";
+
+        novaBolhaBot.innerHTML = textoResposta.replace(/\n/g, '<br>');
         vaiParaFinalDoChat();
     } catch (error) {
         console.error("Erro na requisição:", error);
-        novaBolhaBot.innerHTML = "Desculpe, ocorreu um erro.";
+        novaBolhaBot.innerHTML = "Desculpe, ocorreu um erro ao se comunicar com o servidor.";
     }
 } 
 
@@ -62,7 +86,6 @@ function vaiParaFinalDoChat() {
 
 botaoEnviar.addEventListener('click', enviarMensagem);
 input.addEventListener("keyup", function(event) {
-    event.preventDefault()
 
     if (event.keyCode == 13) {
         botaoEnviar.click();

@@ -11,23 +11,19 @@
 <body>
     <header>
         <h2 class="title title-principal"> Nova Conversa </h2>
-        <a onclick=showSidebar() href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;"></i> </a>
+        <a onclick="showSidebar()" href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;"></i> </a>
     </header>
 
     <nav>
         <ul class="sidebar">
-            <li onclick=hideSidebar()><a href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;" size="200px"></i> </a></li>
-
-            <li > <button id="btn-telainicial" class="hideOnMobile"> <i class="fa-solid fa-house"> </i> Tela Inicial</button> </li> 
-
+            <li onclick="hideSidebar()"><a href="#"> <i class="fa-solid fa-bars icon-sidebar" style="color: #63E6BE;" size="200px"></i> </a></li>
+            <li> <button id="btn-telainicial" class="hideOnMobile"> <i class="fa-solid fa-house"> </i> Tela Inicial</button> </li> 
             <li> <button id="btn-configuracoes" class="hideOnMobile"> Configurações </button></li>
-            
             <li> <button id="btn-sair-conta" class="hideOnMobile"> Sair </button> </li>
         </ul>  
     </nav>
 
     <script>
-
         function showSidebar() {
             const sidebar = document.querySelector('.sidebar')
             sidebar.style.display = 'flex'
@@ -37,113 +33,75 @@
             const sidebar = document.querySelector('.sidebar')
             sidebar.style.display = 'none'
         }
-
     </script>
     
     <div class="container-total">
-
         <div class="container-inicial"> 
-
             <div class="content-txt">
                 <h2 class="title title-txt"> Carregar .TXT </h2>
                 <p class="description description-txt"> Insira seu arquivo .txt e carregue seus dados, para criar um chat. </p>
-                
-                <!--
-                <form action="/upload" method="POST" enctype="multipart/form-data">
-                    <label class="div-input" for="file">
-                        <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;""></i>
-                        Choose a file:
-                        <input type="file" name="file" id="file" accept=".txt" style="display: none;" />
-                        <br /><br />
-                    </label>
-                    <button type="submit"> Upload File </button>
-                </form>
-                -->
 
+                <!-- FORMULÁRIO DE UPLOAD -->
                 <form id="uploadForm" enctype="multipart/form-data">
-                    <label class="div-input" for="file">
-                        <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;""></i>
-                        <!-- <input type="file" id="file" name="file" />    for single file upload -->
+                    <label class="div-input" for="myFiles">
+                        <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;"></i>
                         <input type="file" id="myFiles" accept=".txt" multiple />
-                        <!-- for multiple files uploads -->
-                        <button type="submit"> Upload File </button>
-                        <button id="btn-irchat" > Ir para o chat </button>
                     </label> 
+                    <button type="submit"> Upload File </button>
                 </form>
 
                 <h5></h5>
                 <h6></h6>
+
                 <script>
-                    const form = document.getElementById('uploadForm')
+                    const form = document.getElementById('uploadForm');
 
                     const sendFiles = async () => {
-                        const myFiles = document.getElementById('myFiles').files
-
-                        const formData = new FormData()
+                        const myFiles = document.getElementById('myFiles').files;
+                        const formData = new FormData();
 
                         Object.keys(myFiles).forEach(key => {
-                            formData.append(myFiles.item(key).name, myFiles.item(key))
-                        })
+                            const file = myFiles.item(key);
+                            formData.append(file.name, file);
+
+                            // Salva o nome do primeiro arquivo
+                            if (key == 0) {
+                                localStorage.setItem("arquivo", file.name);
+                            }
+                        });
 
                         const response = await fetch('http://127.0.0.1:3000/upload', {
                             method: 'POST',
                             body: formData
-                        })
+                        });
 
-                        const json = await response.json()
+                        const json = await response.json();
 
-                        const h5 = document.querySelector('h5')
-                        h5.textContent = `Status: ${json?.status}`
+                        const h5 = document.querySelector('h5');
+                        h5.textContent = `Status: ${json?.status}`;
 
-                        const h6 = document.querySelector('h6')
-                        h6.textContent = json?.message
+                        const h6 = document.querySelector('h6');
+                        h6.textContent = json?.message;
 
-                        console.log(json)
-                    }
+                        console.log(json);
+
+                        // Redireciona automaticamente para o chat após sucesso
+                        if (json?.status === "success") {
+                            window.location.href = "conversa_chatbot.html";
+                        }
+                    };
 
                     form.addEventListener('submit', (e) => {
-                        e.preventDefault()
-                        sendFiles()
-                    })
+                        e.preventDefault();
+                        sendFiles();
+                    });
+                    
                 </script>
-
-            </div> <!-- column carregar .txt -->
-
-            <!--
-            <div class="content-bancodados">
-                <h2 class="title title-secundario"> Banco de dados </h2>
-                <p class="description description-principal"> Se conecte com o servidor e suba seu banco de dados, para criar um chat. </p>
-                
-                <form class="form">
-
-                    <label class="label-input" for="">
-                        <i class="fa-solid fa-cloud icon-modify" style="color: #63E6BE;"></i>
-                        <input type="text" placeholder="Servidor" class="form-input">
-                    </label>
-
-                    <label class="label-input" for="">
-                        <i class="fa-regular fa-user icon-modify" style="color: #63E6BE;"></i>
-                        <input type="text" placeholder="Usuário" class="form-input">
-                    </label>
-                    
-                    <label class="label-input" for="">
-                        <i class="fa-solid fa-lock icon-modify" style="color: #63E6BE;"></i>
-                        <input type="password" placeholder="Password" class="form-input">
-                    </label>
-                    
-                    <button class="btn btn-second"> conectar </button>
-                
-                </form>
-
-            </div> 
-            -->
-
-        </div> <!-- container inicial -->
-
-    </div> <!-- container total --> 
+            </div>
+        </div>
+    </div>
 
     <script src="js/barraopcoes.js"></script>
-    <script src="js/telanovaconversa.js"></script>
 
 </body>
 </html>

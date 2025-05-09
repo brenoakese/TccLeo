@@ -61,19 +61,26 @@ def carregar_arquivo_em_memoria(file_path):
 def load_file():
     data = request.json
     filename = data.get("filename")
+    print("📦 Arquivo recebido para carregar:", filename)
 
-    if not filename:
-        return jsonify({ "erro": "Nome do arquivo não fornecido"}), 400
-    
-    file_path = os.path.join("files", filename)
+    file_path = os.path.join("back", "files", filename)
+    print("📂 Verificando se arquivo existe:", os.path.abspath(file_path))
+    print("📁 Conteúdo de vectorstores antes:", vectorstores.keys())
+
     if not os.path.exists(file_path):
+        print("❌ Arquivo não encontrado:", file_path)
         return jsonify({ "erro": "Arquivo não encontrado." }), 404
-    
+
     try:
         carregar_arquivo_em_memoria(file_path)
+        print("✅ Arquivo carregado em memória")
+        print("📁 Conteúdo de vectorstores depois:", vectorstores.keys())
         return jsonify({ "status": "ok", "message": f"Arquivo {filename} carregado." })
     except Exception as e:
+        print("🔥 Erro ao carregar:", str(e))
         return jsonify({ "erro": str(e) }), 500
+
+
 
 
 @app.route("/chat", methods=["POST"])
@@ -89,7 +96,7 @@ def chat():
     if not vectorstore:
         return jsonify({ "erro": "Arquivo ainda não carregado." }), 400
     
-    docs = vectorstore.similarity_search_with_score(question, k=4)
+    docs = vectorstore.similarity_search_with_score(pergunta, k=4)
 
     # Obter contexto dos documentos retornados
     contexto = "\n\n".join([doc[0].page_content for doc in docs])

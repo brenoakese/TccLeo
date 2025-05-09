@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start-node": "node back/server.js",
-    "start-python": "python3 chatbot/gpt4o-mini.py",
-    "start-all": "npm run start-node"
+    "start-flask": "python3 chatbot/gpt4o-mini.py",
+    "start-all": "concurrently \"npm run start-node\" \"npm run start-flask\""
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

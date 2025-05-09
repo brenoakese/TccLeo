@@ -1,30 +1,33 @@
 document.getElementById('form-upload-txt').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    console.log("Arquivo recebido:", req.file);
-
     const formData = new FormData();
     const fileInput = document.getElementById('arquivoTxt');
 
-    console.log("Arquivo selecionado:", fileInput.files[0]);
+    const file = fileInput.files[0];
+    if (!file) {
+        alert("Nenhum arquivo selecionado.");
+        return;
+    }
 
-    formData.append('arquivoTxt', fileInput.files[0]);
+    formData.append(file.name, file);
 
     try {
-        const response = await fetch('http://localhost:3000/upload-txt', {
+        const response = await fetch('http://localhost:3000/upload', {
             method: 'POST',
             body: formData,
         });
 
-        const resultText = await response.text();
-        console.log("Resposta bruta do servidor:", resultText);
+        const result = await response.json();
 
-        if(response.ok) {
-            alert("Arquivo enviado e processado com sucesso!\n\nSaída do script:\n" + result.output);
-            console.log("Caminho do arquivo:", result.filePath);
-            console.log("Saída do script:", result.output);
+        if(response.ok && result.status === "success") {
+            localStorage.setItem("arquivo", file.name);
+
+            alert("Arquivo enviado e processado com sucesso!\n");
+
+            window.location.href = "conversa_chatbot.html";
         } else {
-            alert(result.message);
+            alert(result.message || "Erro desconhecido.");
         }
     }  catch (error) {
         console.error("Erro no upload:", error);
