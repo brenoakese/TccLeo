@@ -82,6 +82,8 @@ def enviar_pergunta(pergunta):
     except Exception as e:
         return f"Ocorreu um erro: {e}"
 
+
+
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()

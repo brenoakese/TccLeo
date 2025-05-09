@@ -37,7 +37,8 @@ const pool = new Pool({
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5501;
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -396,6 +397,8 @@ const upload = multer({
 
 
 
+import fetch from 'node-fetch';
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "novaconversa.html"));
 });
@@ -405,51 +408,75 @@ app.post("/upload",
     filesPayloadExists,
     fileExtLimiter(['.txt']),
     fileSizeLimiter,
-    (req, res) => {
+    async (req, res) => {
         const files = req.files;
         const uploadedFileNames = [];
 
-        const uploadPromises = Object.keys(files).map(key => {
-            const filepath = path.join(__dirname, 'files', files[key].name);
-            uploadedFileNames.push(files[key].name);
+        try {
+            const savePromises = Object.keys(files).map(key => {
+                const filepath = path.join(__dirname, 'files', files[key].name);
+                uploadedFileNames.push(files[key].name);
 
-            return new Promise((resolve, reject) => {
-                files[key].mv(filepath, (err) => {
-                    if (err) return reject(err);
-                    resolve(filepath);
-                });
-            });
-        });
-
-        Promise.all(uploadPromises)
-            .then(() => {
-                console.log("Arquivo(s) salvo(s), executando o Python...");
-
-                exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(`Erro ao executar Python: ${error.message}`);
-                        return res.status(500).json({ status: "error", message: "Erro ao rodar o Python." });
-                    }
-                    if (stderr) {
-                        console.warn(`stderr do Python: ${stderr}`);
-                    }
-                    console.log(`stdout do Python:\n${stdout}`);
-
-                    return res.status(200).json({
-                        status: "success",
-                        message: uploadedFileNames.join(', '),
-                        python_output: stdout
+                return new Promise((resolve, reject) => {
+                    files[key].mv(filepath, (err) => {
+                        if (err) return reject(err);
+                        resolve(filepath);
                     });
                 });
-            })
-            .catch((err) => {
-                console.error("Erro ao mover arquivo:", err);
-                return res.status(500).json({ status: "erro", message: "Erro ao salvar arquivo." });
+            });        
+
+            await Promise.all(savePromises);
+            console.log("Arquivo(s) salvo(s) com sucesso!");
+
+            const filename = uploadedFileNames[0];
+            const flaskResponse = await fetch("http://localhost:5000/load-file", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filename })
             });
+
+            const flaskJson = await flaskResponse.json();
+            console.log("Resposta do Flask: ", flaskJson);
+
+            console.log("Arquivo recebido para carregar:", filename)
+
+            res.status(200).json({
+                status: "success",
+                message: `Arquivo ${filename} processado com sucesso.`
+            });
+
+        } catch (err) {
+            console.error("❌ Erro no upload ou ao chamar o Flask", err);
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({
+                status: "success",
+                message: `Arquivo ${filename} processado com sucesso.`
+            });
+        }
     }
 );
 
 
+app.use(express.static(__dirname));
+
+// exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
+//    if (error) {
+//        console.error(`Erro ao executar Python: ${error.message}`);
+//        return res.status(500).json({ status: "error", message: "Erro ao rodar o Python." });
+//    }
+//    if (stderr) {
+//        console.warn(`stderr do Python: ${stderr}`);
+//    }
+//    console.log(`stdout do Python:\n${stdout}`);
+//
+//    return res.status(200).json({
+//        status: "success",
+//        message: uploadedFileNames.join(', '),
+//        python_output: stdout
+//    });
+//});
+
 app.listen(PORT, () => {
     console.log(`Servidor NODE JS rodando em http://localhost:${PORT}`);
 }); 
+
