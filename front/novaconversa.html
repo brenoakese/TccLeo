@@ -67,44 +67,73 @@
                         <input type="file" id="myFiles" accept=".txt" multiple />
                         <!-- for multiple files uploads -->
                         <button type="submit"> Upload File </button>
-                        <button id="btn-selecionaragente" > Selecionar Agente </button>
                     </label> 
                 </form>
+
+                <button id="btn-selecionaragente" disabled> Selecionar Agente </button>
 
                 <h5></h5>
                 <h6></h6>
                 <script>
-                    const form = document.getElementById('uploadForm')
+                    const form = document.getElementById('uploadForm');
+                    const btnAgente = document.getElementById("btn-selecionaragente");
 
                     const sendFiles = async () => {
-                        const myFiles = document.getElementById('myFiles').files
+                        const myFiles = document.getElementById('myFiles').files;
 
-                        const formData = new FormData()
+                        if (!myFiles.length) {
+                            alert("Selecione pelo menos um arquivo.");
+                            btnAgente.disabled = true;
+                            return;
+                        }
+
+                        const formData = new FormData();
 
                         Object.keys(myFiles).forEach(key => {
-                            formData.append(myFiles.item(key).name, myFiles.item(key))
-                        })
+                            formData.append(myFiles.item(key).name, myFiles.item(key));
+                        });
 
-                        const response = await fetch('http://127.0.0.1:3000/upload', {
+
+                        try {
+
+                            const response = await fetch('http://localhost:5501/upload', {
                             method: 'POST',
                             body: formData
-                        })
+                            });
 
-                        const json = await response.json()
+                            const json = await response.json();
 
-                        const h5 = document.querySelector('h5')
-                        h5.textContent = `Status: ${json?.status}`
+                            const h5 = document.querySelector('h5');
+                            h5.textContent = `Status: ${json?.status}`;
 
-                        const h6 = document.querySelector('h6')
-                        h6.textContent = json?.message
+                            const h6 = document.querySelector('h6');
+                            h6.textContent = json?.message;
 
-                        console.log(json)
-                    }
+                            console.log(json);
+
+                            if (json?.status === "success") {
+                                btnAgente.disabled = false;
+                                localStorage.setItem("arquivo", myFiles.item(0).name);
+                            } else {
+                                btnAgente.disabled = true;
+                                alert("Erro no upload:" + json?.message);
+                            }    
+
+                        } catch(error) {
+
+                            console.error("Erro ao fazer upload:", error);
+                            alert("Erro ao enviar arquivo.");
+                            btnAgente.disabled = true;
+
+                        }
+                        
+                    };
 
                     form.addEventListener('submit', (e) => {
-                        e.preventDefault()
-                        sendFiles()
-                    })
+                        e.preventDefault();
+                        sendFiles();
+                    });
+
                 </script>
 
             </div> <!-- column carregar .txt -->

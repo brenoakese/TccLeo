@@ -4,6 +4,6 @@ document.getElementById("btn-iniciar-chat").addEventListener("click", () => {
 
     localStorage.setItem("agenteSelecionado", agenteSelecionado);
 
-    window.location.href = "chat.html";
+    window.location.href = "conversa_chatbot.html";
 
 });

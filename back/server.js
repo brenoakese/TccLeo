@@ -359,44 +359,6 @@ app.post('/delete-account', async (req, res) => {
 
 
 
-/*
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "back/uploads");
-    },
-    filename: (req, file, cb) => {
-        cb(
-            null,
-            file.filename + "-" + Date.now() + path.extname(file.originalname)
-        );
-    },
-});
-
-const upload = multer({ storage });
-
-app.use(express.static(__dirname));
-
-const upload = multer({
-    storage: storage, 
-    limits: null,
-    fileFilter: (req, file, cb) => {
-        const allowedMime = ['text/plain'];
-        const allowedExt = /\.txt$/;
-
-        const isMimeValid = allowedMime.includes(file.mimetype);
-        const isExtValid = allowedExt.test(path.extname(file.originalname).toLowerCase());
-
-        if (isMimeValid && isExtValid) {
-            return cb(null, true);
-        } else {
-            cb("Error: apenas .txt");
-        }
-    },
-});
-*/
-
-
-
 import fetch from 'node-fetch';
 
 app.get('/', (req, res) => {
@@ -429,14 +391,6 @@ app.post("/upload",
             console.log("Arquivo(s) salvo(s) com sucesso!");
 
             const filename = uploadedFileNames[0];
-            const flaskResponse = await fetch("http://localhost:5000/load-file", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ filename })
-            });
-
-            const flaskJson = await flaskResponse.json();
-            console.log("Resposta do Flask: ", flaskJson);
 
             console.log("Arquivo recebido para carregar:", filename)
 
@@ -450,7 +404,7 @@ app.post("/upload",
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json({
                 status: "success",
-                message: `Arquivo ${filename} processado com sucesso.`
+                message: `Upload concluído, mas houve erro ao chamar o Flask`
             });
         }
     }
@@ -459,24 +413,35 @@ app.post("/upload",
 
 app.use(express.static(__dirname));
 
-// exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
-//    if (error) {
-//        console.error(`Erro ao executar Python: ${error.message}`);
-//        return res.status(500).json({ status: "error", message: "Erro ao rodar o Python." });
-//    }
-//    if (stderr) {
-//        console.warn(`stderr do Python: ${stderr}`);
-//    }
-//    console.log(`stdout do Python:\n${stdout}`);
-//
-//    return res.status(200).json({
-//        status: "success",
-//        message: uploadedFileNames.join(', '),
-//        python_output: stdout
-//    });
-//});
 
 app.listen(PORT, () => {
     console.log(`Servidor NODE JS rodando em http://localhost:${PORT}`);
 }); 
+
+
+
+// RODAR O BOT QUANDO UM ARQUIVO FOR INCLUIDO
+
+
+
+// RODAR O BOT QUANDO UM ARQUIVO FOR INCLUIDO
+app.post('/iniciar-flask', async (req, res) => {
+    try {
+        const resposta = await fetch('http://localhost:5000/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pergunta: "teste" })
+        });
+
+        if (resposta.ok) {
+            console.log("Servidor Flask já está rodando.");
+            return res.status(200).json({ status: "success", message: "Servidor Flask já estava rodando." });
+        } else {
+            throw new Error("Flask respondeu com erro.");
+        }
+    } catch (err) {
+        console.error("Servidor Flask não está ativo:", err);
+        return res.status(500).json({ status: "error", message: "Servidor Flask não está rodando. Inicie manualmente." });
+    }
+});
 
