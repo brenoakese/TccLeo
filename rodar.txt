@@ -1,0 +1,5 @@
+em um terminal rodar: (aplicação)
+npm run start-node
+
+em outro terminal rodar: (robô)
+python3 chatbot/gpt4o-mini.py
