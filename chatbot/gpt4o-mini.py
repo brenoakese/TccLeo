@@ -64,7 +64,7 @@ else:
     vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
 
 
-# Bot padrão
+# Bot 
 def enviar_pergunta(pergunta):
     try:
         # Envia a pergunta para a API

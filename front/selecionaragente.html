@@ -41,11 +41,42 @@
 
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nomeArquivo = localStorage.getItem("arquivo");
+            const tituloArquivo = document.getElementById("nome-arquivo");
+
+            if (tituloArquivo && nomeArquivo) {
+                tituloArquivo.textContent = "Banco de dados - " + nomeArquivo;
+            }
+
+            const btnIniciar = document.getElementById("btn-iniciar-chat");
+
+            btnIniciar.addEventListener("click", () => {
+                const agenteSelecionado = document.querySelector(".selected")?.innerText?.trim();
+
+                if (!nomeArquivo) {
+                    alert("Nenhum arquivo .txt foi carregado. Por favor, volte e faça o upload antes de iniciar o chat.");
+                    return;
+                }
+
+                if (!agenteSelecionado) { 
+                    alert("Selecione um agente para iniciar o chat.");
+                    return;
+                }
+
+                localStorage.setItem("agenteSelecionado", agenteSelecionado);
+
+                window.location.href = "conversa_chatbot.html";
+            });
+        });
+    </script>
+
     <div class="container">
 
         <div class="content-chats"> 
             <h3 class="title-chats title-h3"> Chat - CSV </h2>
-            <h4 class="title-chats title-h4"> Banco de dados PETZ </h2>
+            <h4 class="title-chats title-h4" id="nome-arquivo"> Banco de dados - </h4>
             <p class="description description-chats"> Chat iniciado com um agente de perfil econômico </p>
         </div> <!-- column chats -->
 

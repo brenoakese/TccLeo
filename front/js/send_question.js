@@ -5,11 +5,11 @@ let botaoEnviar = document.querySelector('#botao-enviar');
 async function enviarMensagem() {
     if(input.value.trim() === "") return;
 
-    const mensagem = input.value;
+    const mensagemOriginal = input.value;
     input.value = "";
 
     let novaBolha = criarBolhaUsuario();
-    novaBolha.innerHTML = mensagem;
+    novaBolha.innerHTML = mensagemOriginal;
     chat.appendChild(novaBolha);
 
     let novaBolhaBot = criarBolhaBot();
@@ -20,23 +20,36 @@ async function enviarMensagem() {
 
     // Obter nome do arquivo do localStorage
     const nomeArquivo = localStorage.getItem("arquivo");
+    const agenteSelecionado = localStorage.getItem("agenteSelecionado" || "Padrão");
 
     if (!nomeArquivo) {
         novaBolhaBot.innerHTML = "Erro: nenhum arquivo carregado.";
         return;
     }
 
-
     
+    // Define o estilo do prompt com base no agente
+    let estilo = "";
+    if (agenteSelecionado === "Informal") {
+        estilo = "Responda como um amigo informal, use emojis, gírias leves e linguagem descontraída.";
+    } else {
+        estilo = "Responda de forma clara, objetiva e profissional.";
+    }
+
+    const prompt = `
+    ${estilo}
+
+    ### RESPOSTA 
+
+    ${mensagemOriginal}
+    
+    `;
 
     console.log("ENVIANDO AO FLASK:", {
-        pergunta: mensagem,
-        filename: nomeArquivo
+        pergunta: prompt,
+        filename: nomeArquivo,
+        agente: agenteSelecionado
     });    
-
-
-
-
 
     try {
         // Envia requisição com a mensagem para a API do ChatBot
@@ -46,8 +59,9 @@ async function enviarMensagem() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                pergunta: mensagem,
-                filename: nomeArquivo
+                pergunta: prompt,
+                filename: nomeArquivo,
+                agente: agenteSelecionado
             }),
         });
 
