@@ -424,7 +424,8 @@ app.listen(PORT, () => {
 
 
 
-// RODAR O BOT QUANDO UM ARQUIVO FOR INCLUIDO
+import { exec } from 'child_process';
+
 app.post('/iniciar-flask', async (req, res) => {
     try {
         const resposta = await fetch('http://localhost:5000/chat', {
@@ -440,8 +441,21 @@ app.post('/iniciar-flask', async (req, res) => {
             throw new Error("Flask respondeu com erro.");
         }
     } catch (err) {
-        console.error("Servidor Flask não está ativo:", err);
-        return res.status(500).json({ status: "error", message: "Servidor Flask não está rodando. Inicie manualmente." });
+        console.warn("⚠️ Servidor Flask não está rodando. Tentando iniciar...");
+
+        exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
+            if (error) {
+                console.error("❌ Erro ao iniciar Flask:", error.message);
+                return res.status(500).json({ status: "error", message: error.message });
+            }
+
+            if (stderr) {
+                console.warn("⚠️ stderr do Flask:", stderr);
+            }
+
+            console.log("✅ stdout do Flask:", stdout);
+            return res.status(200).json({ status: "success", message: "Servidor Flask inicializado. "});
+        });
     }
 });
 
