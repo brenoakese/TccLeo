@@ -3,6 +3,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const btnAgente = document.getElementById("btn-selecionaragente");
+    const mensagemStatus = document.getElementById("mensagem-status");
+    const spinner = document.getElementById("spinner");
 
     if (!btnAgente) {
         console.warn("Botão 'Selecionar Agente' não encontrado.");
@@ -10,13 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const nomeArquivo = localStorage.getItem("arquivo");
-    if (nomeArquivo) {
-        btnAgente.disabled = false;
-    } else {
-        btnAgente.disabled = true;
-    }
+    btnAgente.disabled = !nomeArquivo;
+
 
     btnAgente.addEventListener("click", async () => {
+
+        btnAgente.disabled = true;
+
+        mensagemStatus.textContent = "⏳ Preparando ambiente..."
+        mensagemStatus.style.color = "#2c3e50";
+        spinner.style.display = "block";
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
         try {
             const response = await fetch("http://localhost:5501/iniciar-flask", {
                 method: "POST"
@@ -26,13 +34,22 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Resposta do servidor Flask:", json);
 
             if (json.status === "success") {
-                window.location.href = 'selecionaragente.html';
+                mensagemStatus.textContent = "✅ Servidor Flask pronto!";
+                mensagemStatus.style.color = "green";
+                spinner.style.display = "none";
+                setTimeout(() => {
+                    window.location.href = 'selecionaragente.html';
+                }, 1000);
             } else {
-                alert("Erro ao iniciar o servidor Flask." + json.message);
+                mensagemStatus.textContent = "❌ Erro ao iniciar o servidor Flask: ", + json.message;
+                mensagemStatus.style.color = "red";
+                spinner.style.display = "none";
             }
         } catch (error) {
             console.error("Erro ao iniciar Flask:", error);
-            alert("Erro ao iniciar servidor Flask." + error.message);
+            mensagemStatus.textContent = "❌ Erro ao iniciar servidor Flask. Verifique se ele está rodando.";
+            mensagemStatus.style.color = "red";
+            spinner.style.display = "none";
         }
     });
 });

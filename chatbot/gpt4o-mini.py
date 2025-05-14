@@ -25,45 +25,6 @@ load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
 
-chunk_size = 500
-percentual_overlap = 0.2
-
-# Variável criada para caso você já tenha criado um banco de dados ou não, caso não criado, coloque "True"
-criar_db = True
-
-def open_file(file_path):
-    try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            contents = file.read()
-        return contents
-    except FileNotFoundError:
-        return "File not found."
-    except Exception as e:
-        return f"Error: {e}"
-        
-if criar_db:
-    arquivo = latest_file()
-        
-    texto = open_file(arquivo)
-    filename = os.path.basename(arquivo)
-    metadatas = [{"nome do arquivo": filename}]
-
-
-    text_splitter = CharacterTextSplitter(separator="\n", chunk_size=chunk_size,
-                                        chunk_overlap=int(chunk_size * percentual_overlap),
-                                        length_function=len,
-                                        is_separator_regex=False,
-                                        )
-
-
-    all_splits = text_splitter.create_documents([texto], metadatas=metadatas)
-
-    vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
-
-else:
-    vectorstore = Chroma(embedding_function=OpenAIEmbeddings(api_key=api_key), persist_directory="chroma")
-
-
 # Bot 
 def enviar_pergunta(pergunta):
     try:

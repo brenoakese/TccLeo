@@ -394,6 +394,18 @@ app.post("/upload",
 
             console.log("Arquivo recebido para carregar:", filename)
 
+            exec(`python3 chatbot/atualizar_vectorstore.py "${filename}"`, (error, stdout, stderr) => {
+                if (error) {
+                    console.error("Erro ao atualizar vectorstore:", error.message);
+                } else {
+                    console.log("Atualização do vectorstore:", stdout);
+                }
+
+                if (stderr && !stderr.includes("DeprecationWarning")) {
+                    console.warn("Stderr:", stderr);
+                }
+            });
+
             res.status(200).json({
                 status: "success",
                 message: `Arquivo ${filename} processado com sucesso.`
@@ -424,7 +436,7 @@ app.listen(PORT, () => {
 
 
 
-import { exec } from 'child_process';
+import {spawn} from 'child_process';
 
 app.post('/iniciar-flask', async (req, res) => {
     try {
@@ -449,12 +461,30 @@ app.post('/iniciar-flask', async (req, res) => {
                 return res.status(500).json({ status: "error", message: error.message });
             }
 
-            if (stderr) {
-                console.warn("⚠️ stderr do Flask:", stderr);
-            }
-
             console.log("✅ stdout do Flask:", stdout);
-            return res.status(200).json({ status: "success", message: "Servidor Flask inicializado. "});
+            
+            const tentarConectar = async (tentativas = 10) => {
+                for (let i = 0; i < tentativas; i++) {
+                    try {
+                        const teste = await fetch('http://localhost:5000/chat', {
+                            metohd: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ pergunta: "teste" }) 
+                        });
+
+                        if (teste === "ok") {
+                            console.log("✅ Flask está pronto para receber conexões.");
+                            return res.status(200).json({ status: "success", message: "Servidor Flask iniciado." });
+                        }
+                    } catch (e) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+
+                return es.status(500).json({ status: "error", message: "Flask não respondeu após tentativa de inicialização." });
+            };
+
+            tentarConectar();
         });
     }
 });

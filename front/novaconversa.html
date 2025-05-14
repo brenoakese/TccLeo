@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="styles/style-novaconversa.css">
     <script src="https://kit.fontawesome.com/b8475028b4.js" crossorigin="anonymous"></script>
     <title> Nova conversa </title>
+
+    <style>
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #63E6BE;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -72,14 +89,17 @@
 
                 <button id="btn-selecionaragente" disabled> Selecionar Agente </button>
 
-                <h5></h5>
-                <h6></h6>
+                <div id="mensagem-status" style="margin-top: 10px; text-align: center; font-weight: bold;"></div>
+
+                <div id="spinner" class="spinner" style="display: none; margin-top: 10px;"></div>
+
                 <script>
                     const form = document.getElementById('uploadForm');
                     const btnAgente = document.getElementById("btn-selecionaragente");
 
                     const sendFiles = async () => {
                         const myFiles = document.getElementById('myFiles').files;
+                        const mensagemStatus = document.getElementById("mensagem-status");
 
                         if (!myFiles.length) {
                             alert("Selecione pelo menos um arquivo.");
@@ -94,6 +114,10 @@
                         });
 
 
+                        mensagemStatus.textContent = "⏳ Processando arquivo e preparando base de dados...";
+                        document.getElementById("spinner").style.display = "block";
+
+
                         try {
 
                             const response = await fetch('http://localhost:5501/upload', {
@@ -103,26 +127,26 @@
 
                             const json = await response.json();
 
-                            const h5 = document.querySelector('h5');
-                            h5.textContent = `Status: ${json?.status}`;
-
-                            const h6 = document.querySelector('h6');
-                            h6.textContent = json?.message;
-
                             console.log(json);
 
                             if (json?.status === "success") {
+                                document.getElementById("spinner").style.display = "none";
                                 btnAgente.disabled = false;
+                                mensagemStatus.textContent = "✅ Arquivo processado com sucesso! Você pode selecionar o agente !!";
+                                mensagemStatus.style.color = "green";
                                 localStorage.setItem("arquivo", myFiles.item(0).name);
                             } else {
                                 btnAgente.disabled = true;
-                                alert("Erro no upload:" + json?.message);
+                                mensagemStatus.textContent = "❌ Erro no upload: " + json?.message;
+                                mensagemStatus.style.color = "red";
                             }    
 
                         } catch(error) {
 
+                            document.getElementById("spinner").style.display = "none";
                             console.error("Erro ao fazer upload:", error);
-                            alert("Erro ao enviar arquivo.");
+                            mensagemStatus.textContent = "❌ Erro ao enviar arquivo para o servidor...";
+                            mensagemStatus.style.color = "red";
                             btnAgente.disabled = true;
 
                         }
