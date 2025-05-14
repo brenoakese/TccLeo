@@ -25,6 +25,30 @@ load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
 
+vectorstore_ready = False
+vectorstore = None
+
+
+try:
+    vectorstore = Chroma (
+        embedding_function=OpenAIEmbeddings(api_key=api_key),
+        persist_directory = "chroma"
+    )
+    vectorstore_ready = True
+        
+    print("✅ Vectorstore carregado com sucesso!")
+except Exception as e:
+    print("❌ Erro ao carregar vectorstore:", e)
+
+
+@app.route("/ready", methods=["GET"])
+def ready():
+    if vectorstore_ready:
+        return jsonify({ "status": "ready" }), 200
+    else:
+        return jsonify({ "status": "loading" }), 503
+
+
 # Bot 
 def enviar_pergunta(pergunta):
     try:
@@ -47,6 +71,9 @@ def enviar_pergunta(pergunta):
 
 @app.route("/chat", methods=["POST"])
 def chat():
+    if not vectorstore_ready:
+        return jsonify({ "erro": "Vectorstore ainda não está pronto" }), 503
+
     data = request.get_json()
     question = data.get("pergunta")
 

@@ -440,52 +440,46 @@ import {spawn} from 'child_process';
 
 app.post('/iniciar-flask', async (req, res) => {
     try {
-        const resposta = await fetch('http://localhost:5000/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pergunta: "teste" })
-        });
+        const resposta = await fetch('http://localhost:5000/ready');
+        const status = await resposta.json();
 
-        if (resposta.ok) {
+        if (resposta.ok && status.status === "ready") {
             console.log("Servidor Flask já está rodando.");
             return res.status(200).json({ status: "success", message: "Servidor Flask já estava rodando." });
-        } else {
-            throw new Error("Flask respondeu com erro.");
         }
     } catch (err) {
         console.warn("⚠️ Servidor Flask não está rodando. Tentando iniciar...");
+    }
 
-        exec('python3 chatbot/gpt4o-mini.py', (error, stdout, stderr) => {
-            if (error) {
-                console.error("❌ Erro ao iniciar Flask:", error.message);
-                return res.status(500).json({ status: "error", message: error.message });
+    const flaskProcess = spawn ('python3', ['chatbot/gpt4o-mini.py'], {
+        detached: true,
+        stdio: 'inherit'
+    });
+    flaskProcess.unref();
+            
+    const tentarConectar = async (tentativas = 10) => {
+        for (let i = 0; i < tentativas; i++) {
+            try {
+                const resposta = await fetch('http://localhost:5000/ready');
+                const status = await resposta.json();
+
+                if (resposta.ok && status.status === "ready") {
+                    console.log("Servidor Flask já está rodando.");
+                    return res.status(200).json({ status: "success", message: "Servidor Flask já estava rodando." });
+                }
+            } catch (err) {
+                console.log(`⏳ Tentativa ${i + 1}/10 - aguardando Flask /ready...`);
             }
 
-            console.log("✅ stdout do Flask:", stdout);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
-            const tentarConectar = async (tentativas = 10) => {
-                for (let i = 0; i < tentativas; i++) {
-                    try {
-                        const teste = await fetch('http://localhost:5000/chat', {
-                            metohd: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ pergunta: "teste" }) 
-                        });
+        }
 
-                        if (teste === "ok") {
-                            console.log("✅ Flask está pronto para receber conexões.");
-                            return res.status(200).json({ status: "success", message: "Servidor Flask iniciado." });
-                        }
-                    } catch (e) {
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                    }
-                }
 
-                return es.status(500).json({ status: "error", message: "Flask não respondeu após tentativa de inicialização." });
-            };
+        return res.status(500).json({ status: "error", message: "Flask não respondeu como pronto após as tentativas." });
+    };
 
-            tentarConectar();
-        });
-    }
+    tentarConectar();
+    
 });
 

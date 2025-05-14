@@ -87,7 +87,7 @@
                     </label> 
                 </form>
 
-                <button id="btn-selecionaragente" disabled> Selecionar Agente </button>
+                <button id="btn-selecionaragente" disabled> Gerar Banco </button>
 
                 <div id="mensagem-status" style="margin-top: 10px; text-align: center; font-weight: bold;"></div>
 
@@ -132,6 +132,7 @@
                             if (json?.status === "success") {
                                 document.getElementById("spinner").style.display = "none";
                                 btnAgente.disabled = false;
+                                btnAgente.textContent = "Selecionar Agente";
                                 mensagemStatus.textContent = "✅ Arquivo processado com sucesso! Você pode selecionar o agente !!";
                                 mensagemStatus.style.color = "green";
                                 localStorage.setItem("arquivo", myFiles.item(0).name);
@@ -148,6 +149,7 @@
                             mensagemStatus.textContent = "❌ Erro ao enviar arquivo para o servidor...";
                             mensagemStatus.style.color = "red";
                             btnAgente.disabled = true;
+                            btnAgente.textContent = "Gerar Banco";
 
                         }
                         

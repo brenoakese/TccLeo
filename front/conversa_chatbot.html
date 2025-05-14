@@ -17,10 +17,7 @@
     <main class="main">
 
         <section class="chat container" id="chat">
-            <p class="chat__bolha chat__bolha--bot">
-                Oi!! Sou seu assistente virtual <br/><br/>
-                Como posso ajudar você?
-            </p>
+
         </section>
 
         <section class="entrada container">
@@ -33,6 +30,26 @@
         </section>
 
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const chat = document.getElementById("chat");
+            const agente = localStorage.getItem("agenteSelecionado") || "Padrão";
+
+            let mensagemInicial = "";
+
+            if (agente === "Informal") {
+                mensagemInicial = "E aí! 😎 Manda ver na sua pergunta que eu tô pronto pra trocar ideia!";
+            } else {
+                mensagemInicial = "Olá! Sou seu assistente.\n Envie uma pergunta baseada no banco de dados inserido.";
+            }
+
+            const bolhaBot = document.createElement('p');
+            bolhaBot.className = "chat__bolha chat__bolha--bot";
+            bolhaBot.innerHTML = mensagemInicial;
+            chat.appendChild(bolhaBot);
+        });
+    </script>
 
     <script src="js/send_question.js"></script>
 
