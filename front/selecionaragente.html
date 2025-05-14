@@ -67,6 +67,16 @@
 
                 localStorage.setItem("agenteSelecionado", agenteSelecionado);
 
+                const novoChat = {
+                    nome: `Chat - ${new Date().toLocaleString("pt-BR")}`,
+                    arquivo: nomeArquivo,
+                    agente: agenteSelecionado
+                };
+
+                const chats = JSON.parse(localStorage.getItem("chats") || "[]");
+                chats.push(novoChat);
+                localStorage.setItem("chats", JSON.stringify(chats));
+
                 window.location.href = "conversa_chatbot.html";
             });
         });
