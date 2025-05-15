@@ -2,7 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(".container");
     const chats = JSON.parse(localStorage.getItem("chats") || "[]");
 
-    chats.forEach((chat, index) => {
+    const chatsParaMostrar = chats.slice(-3).reverse();
+
+    document.querySelectorAll(".content-chats").forEach(el => el.remove());
+
+
+    chatsParaMostrar.forEach((chat, index) => {
         const chatDiv = document.createElement("div");
         chatDiv.className = "content-chats";
 
@@ -10,32 +15,28 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3 class="title-chats title-h3">${chat.nome}</h3>
             <h4 class="title-chats title-h4">Banco de dados - ${chat.arquivo}</h4>
             <p class="description description-chats">Chat iniciado com um agente de perfil ${chat.agente}</p>
-            <button class="btn btn-second" data-index="${index}">Ir para chat</button>
+            <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
         `;
 
         container.insertBefore(chatDiv, document.getElementById("btn-novochat"));
     });
 
-    ocument.querySelectorAll(".btn-second[data-index]").forEach(btn => {
-        btn.addEventListener("click", (e) => {
+    document.querySelectorAll(".btn-ir-chat").forEach(botao => {
+        botao.addEventListener("click", (e) => {
             const index = e.target.getAttribute("data-index");
             const chats = JSON.parse(localStorage.getItem("chats") || "[]");
             const chatSelecionado = chats[index];
 
-            // Salva esse chat como o atual
-            localStorage.setItem("arquivo", chatSelecionado.arquivo);
-            localStorage.setItem("agenteSelecionado", chatSelecionado.agente);
-
-            // Vai para o chat
-            window.location.href = "conversa_chatbot.html";
+            if (chatSelecionado) {
+                localStorage.setItem("arquivo", chatSelecionado.arquivo);
+                localStorage.setItem("agenteSelecionado", chatSelecionado.agente);
+                window.location.href = "conversa_chatbot.html";
+            }  
         });
     });
 
-});
-
-
-document.getElementById("btn-novochat").addEventListener("click", (event) => {
-    event.preventDefault();
-
-    window.location.href = 'selecionaragente.html';
+    document.getElementById("btn-novoChat").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = "novaconversa.html";
+    });
 });
