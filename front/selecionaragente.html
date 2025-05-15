@@ -45,9 +45,15 @@
         document.addEventListener("DOMContentLoaded", () => {
             const nomeArquivo = localStorage.getItem("arquivo");
             const tituloArquivo = document.getElementById("nome-arquivo");
+            const [nomeSemExtensao, extensao] = nomeArquivo.split(".");
 
-            if (tituloArquivo && nomeArquivo) {
-                tituloArquivo.textContent = "Banco de dados - " + nomeArquivo;
+            if (tituloArquivo) {
+                tituloArquivo.textContent = "Banco de dados - " + nomeSemExtensao;
+            }
+
+            const tituloChat = document.getElementById("chat-nome");
+            if (tituloChat) {
+                tituloChat.textContent = `Chat - .${extensao}`;
             }
 
             const btnIniciar = document.getElementById("btn-iniciar-chat");
@@ -67,8 +73,10 @@
 
                 localStorage.setItem("agenteSelecionado", agenteSelecionado);
 
+                const [nomeSemExtensao, extensao] = nomeArquivo.split(".");
+
                 const novoChat = {
-                    nome: `Chat - ${new Date().toLocaleString("pt-BR")}`,
+                    nome: `Chat - .${extensao}`,
                     arquivo: nomeArquivo,
                     agente: agenteSelecionado
                 };
@@ -85,7 +93,7 @@
     <div class="container">
 
         <div class="content-chats"> 
-            <h3 class="title-chats title-h3"> Chat - CSV </h2>
+            <h3 class="title-chats title-h3" id="chat-nome"> Chat </h2>
             <h4 class="title-chats title-h4" id="nome-arquivo"> Banco de dados - </h4>
             <p class="description description-chats"> Selecione o agente para o qual deseja iniciar a conversa com o chatbot. </p>
         </div> <!-- column chats -->
@@ -107,7 +115,7 @@
         </div> <!-- container botão dropdown -->
 
 
-        <button id="btn-iniciar-chat">Iniciar Chat</button>
+        <button class="btn btn-second" id="btn-iniciar-chat">Iniciar Chat</button>
 
         
         

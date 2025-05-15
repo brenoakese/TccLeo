@@ -190,6 +190,17 @@ nav button:hover {
     margin-top: 1rem;
 }
 
+.btn-primary {
+    background-color: transparent;
+    border: 1px solid #fff;
+    transition: background-color 1s;
+}
+
+.btn-primary:hover {
+    background-color: #fff;
+    color: #58af9b;
+}
+
 .btn-second {
     background-color: #58af9b;
     border: 1px solid #58af9b;
