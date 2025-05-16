@@ -6,8 +6,12 @@
     box-sizing: border-box;
 }
 
-body {
+body, html {
     font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 header {
@@ -111,17 +115,24 @@ nav button:hover {
 
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #ecf0f1;
     flex-direction: column;
     gap: 30px;
+    padding-bottom: 150px;
+    padding: 1rem;
+    margin: auto;
+    overflow-x: hidden;
 }
 
 .content-chats {
     background-color: #fff;
     border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
     width: 550px;
     height: 30vh;
     display: flex;
@@ -129,6 +140,7 @@ nav button:hover {
     flex-direction: column;
     text-align: left;
     box-shadow: -6.5px 0 10px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
 }
 
 .title {
@@ -211,6 +223,42 @@ nav button:hover {
     background-color: #fff;
     border: 1px solid #58af9b;
     color: #58af9b;
+}
+
+#btn-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#btn-novoChat {
+    padding: 0.75rem 2rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5pg rgba(0, 0, 0, 0.2);
+}
+
+#btn-novoChat:hover {
+    background-color: #4fd7ab;
+}
+
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 1rem;
+    padding-bottom: 180px;
+  }
+
+  #btn-novoChat {
+    width: 90%;
+    font-size: 1rem;
+  }
 }
 
 .icon-sidebar {

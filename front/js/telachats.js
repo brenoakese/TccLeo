@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
         `;
 
-        container.insertBefore(chatDiv, document.getElementById("btn-novochat"));
+        const botaoNovoChat = document.getElementById("btn-container");
+        container.insertBefore(chatDiv, botaoNovoChat);
     });
 
     document.querySelectorAll(".btn-ir-chat").forEach(botao => {
@@ -30,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (chatSelecionado) {
                 localStorage.setItem("arquivo", chatSelecionado.arquivo);
                 localStorage.setItem("agenteSelecionado", chatSelecionado.agente);
+
+                console.log("⏳ Enviando arquivo:", chatSelecionado.arquivo);
                 
                 try {
                     const response = await fetch("http://localhost:5501/gerar-vectorstore", {
@@ -38,18 +41,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         body: JSON.stringify({ arquivo: chatSelecionado.arquivo })
                     });
 
-                    const json = await response.json();
+                    const contentType = response.headers.get("Content-Type") || "";
+                    let json;
+
+                    if (contentType.includes("application/json")) {
+                        json = await response.json();
+                    } else {
+                        const text = await response.text();
+                        throw new Error("Resposta não-JSON: " + text);
+                    }
 
                     if (response.ok) {
-                        console.log("\u2705 Vecstore criado:", json.message);
+                        console.log("✅ Vectorstore criado:", json.message);
                         window.location.href = "conversa_chatbot.html";
                     } else {
                         alert("Erro ao preparar contexto: " + json.message);
+                        console.error("Resposta completa com erro:", json);
                     }
                 } catch (err) {
-                    console.error("Erro ao chamar gerar-vectorstore:", err);
-                    alert("Erro ao tentar carregar contexto.");
+                    console.error("🔥 Erro ao chamar gerar-vectorstore:", err.message || err);
+                    alert("Erro ao tentar carregar contexto. Veja o console para detalhes.");
                 }
+
             }  
         });
     });
