@@ -70,6 +70,13 @@ async function enviarMensagem() {
 
         novaBolhaBot.innerHTML = textoResposta.replace(/\n/g, '<br>');
         vaiParaFinalDoChat();
+
+        // Salvar as conversas no histórico
+        let historico = JSON.parse(localStorage.getItem(`chat_${nomeArquivo}`) || "[]");
+        historico.push({ autor: "usuario", texto: mensagemOriginal });
+        historico.push({ autor: "bot", texto: textoResposta });
+        localStorage.setItem(`chat_${nomeArquivo}`, JSON.stringify(historico));
+
     } catch (error) {
         console.error("Erro na requisição:", error);
         novaBolhaBot.innerHTML = "Desculpe, ocorreu um erro ao se comunicar com o servidor.";
@@ -105,4 +112,26 @@ input.addEventListener("keyup", function(event) {
         botaoEnviar.click();
     }
 
+});
+
+
+// Reconstrói os chats
+document.addEventListener("DOMContentLoaded", () => {
+    const nomeArquivo = localStorage.getItem("arquivo");
+    const chat = document.querySelector('#chat');
+
+    if (!nomeArquivo) {
+        console.warn("Nenhum nome de arquivo encontrado para restaurar histórico.");
+        return;
+    }
+
+    const historico = JSON.parse(localStorage.getItem(`chat_${nomeArquivo}`) || '[]');
+
+    historico.forEach(mensagem => {
+        const bolha = mensagem.autor === "usuario" ? criarBolhaUsuario() : criarBolhaBot();
+        bolha.innerHTML = mensagem.texto;
+        chat.appendChild(bolha);
+    });
+
+    vaiParaFinalDoChat();
 });

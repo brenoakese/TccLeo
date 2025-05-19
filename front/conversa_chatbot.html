@@ -78,6 +78,20 @@
         });
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const arquivo = localStorage.getItem("arquivo");
+            const agente = localStorage.getItem("agenteSelecionado");
+
+            if(!arquivo || !agente) {
+                alert("Erro: contexto do chat não encontrado.");
+                window.location.href = "chats.html";
+            }
+
+            console.log("🔁 Chat restaurado com:", arquivo, agente);
+        });
+    </script>
+
     <script src="js/send_question.js"></script>
     <script src="js/barraopcoes.js"> </script>
 

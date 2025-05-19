@@ -35,21 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("⏳ Enviando arquivo:", chatSelecionado.arquivo);
                 
                 try {
-                    const response = await fetch("http://localhost:5501/gerar-vectorstore", {
-                        method: 'POST',
+                    const response = await fetch("http://127.0.0.1:5501/gerar-vectorstore", {
+                        method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ arquivo: chatSelecionado.arquivo })
                     });
 
-                    const contentType = response.headers.get("Content-Type") || "";
-                    let json;
-
-                    if (contentType.includes("application/json")) {
-                        json = await response.json();
-                    } else {
-                        const text = await response.text();
-                        throw new Error("Resposta não-JSON: " + text);
-                    }
+                    const json = await response.json();
 
                     if (response.ok) {
                         console.log("✅ Vectorstore criado:", json.message);

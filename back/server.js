@@ -41,7 +41,7 @@ const PORT = process.env.PORT || 5501;
 
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // ou especifique sua origem
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
@@ -371,7 +371,7 @@ app.post('/delete-account', async (req, res) => {
 import fetch from 'node-fetch';
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "novaconversa.html"));
+    res.sendFile(path.join(__dirname, "../front/novaconversa.html"));
 });
 
 app.post("/upload",
@@ -403,7 +403,7 @@ app.post("/upload",
 
             console.log("Arquivo recebido para carregar:", filename)
 
-            exec(`python3 chatbot/atualizar_vectorstore.py "${filename}"`, (error, stdout, stderr) => {
+            exec(`python3 chatbot/atualizar_vectorstore.py "files/${filename}"`, (error, stdout, stderr) => {
                 if (error) {
                     console.error("Erro ao atualizar vectorstore:", error.message);
                 } else {
