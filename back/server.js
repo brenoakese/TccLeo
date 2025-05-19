@@ -403,18 +403,6 @@ app.post("/upload",
 
             console.log("Arquivo recebido para carregar:", filename)
 
-            exec(`python3 chatbot/atualizar_vectorstore.py "files/${filename}"`, (error, stdout, stderr) => {
-                if (error) {
-                    console.error("Erro ao atualizar vectorstore:", error.message);
-                } else {
-                    console.log("Atualização do vectorstore:", stdout);
-                }
-
-                if (stderr && !stderr.includes("DeprecationWarning")) {
-                    console.warn("Stderr:", stderr);
-                }
-            });
-
             res.status(200).json({
                 status: "success",
                 message: `Arquivo ${filename} processado com sucesso.`
@@ -490,23 +478,4 @@ app.post('/iniciar-flask', async (req, res) => {
 
     tentarConectar();
     
-});
-
-
-app.post('/gerar-vectorstore', async(req, res) => {
-    const {arquivo} = req.body;
-
-    if (!arquivo) {
-        return res.status(400).json({ message: "Arquivo não informado" });
-    }
-
-    exec(`python3 chatbot/atualizar_vectorstore.py "${arquivo}"`, (error, stdout, stderr) => {
-        if (error) {
-            console.error("Erro ao gerar vectorstore:", error.message);
-            return res.status(500).json({ message: "Erro ao gerar vectorstore."});
-        }
-
-        console.log("\u2705 Vectorstore atualizado:", stdout);
-        return res.status(200).json({ message: "Vectorstore gerado com sucesso." });
-    });
 });

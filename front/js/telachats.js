@@ -33,27 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("agenteSelecionado", chatSelecionado.agente);
 
                 console.log("⏳ Enviando arquivo:", chatSelecionado.arquivo);
-                
-                try {
-                    const response = await fetch("http://127.0.0.1:5501/gerar-vectorstore", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ arquivo: chatSelecionado.arquivo })
-                    });
 
-                    const json = await response.json();
-
-                    if (response.ok) {
-                        console.log("✅ Vectorstore criado:", json.message);
-                        window.location.href = "conversa_chatbot.html";
-                    } else {
-                        alert("Erro ao preparar contexto: " + json.message);
-                        console.error("Resposta completa com erro:", json);
-                    }
-                } catch (err) {
-                    console.error("🔥 Erro ao chamar gerar-vectorstore:", err.message || err);
-                    alert("Erro ao tentar carregar contexto. Veja o console para detalhes.");
-                }
+                window.location.href = "conversa_chatbot.html";
 
             }  
         });
