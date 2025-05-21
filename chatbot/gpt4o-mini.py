@@ -111,10 +111,20 @@ def chat():
     # Obter contexto dos documentos retornados
     contexto = "\n\n".join([doc[0].page_content for doc in docs])
 
+    # Obter o agente para resposta
+    agente = data.get("agente", "Padrão")
+
+    if agente == "Informal":
+        estilo = "linguagem informal, amigável, com emojis e gírias leves."
+    else:
+        estilo = "lingaugem clara, objetiva e profissional, mas sempre respeitoso e educado."
+
     # Criar o prompt com base no contexto e na pergunta
     prompt = f"""
-    Responda à pergunta com base nas informações fornecidas no contexto abaixo. 
+    Você é um assistente inteligente que responde perguntas com base nas informações fornecidas no contexto abaixo. 
     Se a resposta não estiver no contexto, diga que não encontrou essa informação.
+
+    Seu estilo de resposta deve ser: {estilo}
 
     ### CONTEXTO
 
@@ -123,6 +133,8 @@ def chat():
     ### PERGUNTA
 
     {pergunta_refinada}
+
+    ### RESPOSTA
     """
 
     resposta = enviar_pergunta(prompt)
