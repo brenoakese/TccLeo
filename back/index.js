@@ -17,7 +17,7 @@ document.getElementById("btn-login").addEventListener("click", async (event) => 
 
    try {
        // Fazer a requisição para o servidor
-       const response = await fetch('http://127.0.0.1:3000/login', {
+       const response = await fetch('http://127.0.0.1:5501/login', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ document.getElementById("btn-cadastro").addEventListener("click", async (event) 
    };
 
    try {
-       const response = await fetch('http://127.0.0.1:3000/register', {
+       const response = await fetch('http://127.0.0.1:5501/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

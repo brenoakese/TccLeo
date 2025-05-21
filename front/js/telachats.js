@@ -1,47 +1,48 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const container = document.querySelector(".container");
-    const chats = JSON.parse(localStorage.getItem("chats") || "[]");
+    const email = localStorage.getItem("userEmail");
 
-    const chatsParaMostrar = chats.slice(-3).reverse();
+    if(!email) {
+        alert("Usuário não logado.");
+        return;
+    }
 
-    document.querySelectorAll(".content-chats").forEach(el => el.remove());
+    try {
+        const response = await fetch(`http://localhost:5501/chats?email=${encodeURIComponent(email)}`);
+        const chats = await response.json();
 
+        document.querySelectorAll(".content-chats").forEach(el => el.remove());
 
-    chatsParaMostrar.forEach((chat, index) => {
-        const chatDiv = document.createElement("div");
-        chatDiv.className = "content-chats";
+        chats.forEach((chat, index) => {
+            const chatDiv = document.createElement("div");
+            chatDiv.className = "content-chats";
 
-        chatDiv.innerHTML = `
-            <h3 class="title-chats title-h3">${chat.nome}</h3>
-            <h4 class="title-chats title-h4">Banco de dados - ${chat.arquivo}</h4>
-            <p class="description description-chats">Chat iniciado com um agente de perfil ${chat.agente}</p>
-            <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
-        `;
+            chatDiv.innerHTML = `
+                <h3 class="title-chats title-h3">${chat.nome}</h3>
+                <h4 class="title-chats title-h4">Banco de dados - ${chat.arquivo_nome}</h4>
+                <p class="description description-chats">Chat iniciado com um agente de perfil ${chat.agente}</p>
+                <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
+            `;
 
-        const botaoNovoChat = document.getElementById("btn-container");
-        container.insertBefore(chatDiv, botaoNovoChat);
-    });
+            container.appendChild(chatDiv);
+        });
 
-    document.querySelectorAll(".btn-ir-chat").forEach(botao => {
-        botao.addEventListener("click", async (e) => {
-            const index = e.target.getAttribute("data-index");
-            const chats = JSON.parse(localStorage.getItem("chats") || "[]");
-            const chatSelecionado = chats[index];
+        document.querySelectorAll(".btn-ir-chat").forEach(botao => {
+            botao.addEventListener("click", () => {
+                const arquivo = botao.getAttribute("data-arquivo");
+                const agente = botao.getAttribute("data-agente");
 
-            if (chatSelecionado) {
-                localStorage.setItem("arquivo", chatSelecionado.arquivo);
-                localStorage.setItem("agenteSelecionado", chatSelecionado.agente);
-
-                console.log("⏳ Enviando arquivo:", chatSelecionado.arquivo);
+                localStorage.setItem("arquivo", arquivo);
+                localStorage.setItem("agenteSelecionado", agente);
 
                 window.location.href = "conversa_chatbot.html";
 
-            }  
+            });
         });
-    });
 
-    document.getElementById("btn-novoChat").addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.href = "novaconversa.html";
-    });
+    } catch (err) {
+        console.error("Erro ao carregar chats:", err);
+        alert("Erro ao carregar seus chats.");
+    }
+    
 });

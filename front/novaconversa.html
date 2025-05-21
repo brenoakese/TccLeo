@@ -122,6 +122,9 @@
 
                             const response = await fetch('http://localhost:5501/upload', {
                             method: 'POST',
+                            headers: {
+                                'x-user-email': localStorage.getItem("userEmail")  // <-- ENVIA O EMAIL AQUI
+                            },
                             body: formData
                             });
 

@@ -382,6 +382,13 @@ app.post("/upload",
     async (req, res) => {
         const files = req.files;
         const uploadedFileNames = [];
+        const email = req.headers['x-user-email'];
+
+        if(!email) {
+            return res.status(400).json({ message: "Email do usuárionão recebido" });
+        }
+
+        console.log("📩 Email recebido no upload:", email);
 
         try {
             const savePromises = Object.keys(files).map(key => {
@@ -401,7 +408,14 @@ app.post("/upload",
 
             const filename = uploadedFileNames[0];
 
-            console.log("Arquivo recebido para carregar:", filename)
+            const client = await pool.connect();
+            await client.query(
+                'INSERT INTO chats (email, arquivo_nome) VALUES($1, $2)',
+                [email, filename]
+            );
+            client.release();
+
+            console.log(`✅ Chat registrado para ${email}: ${filename}`);
 
             res.status(200).json({
                 status: "success",
@@ -412,8 +426,8 @@ app.post("/upload",
             console.error("❌ Erro no upload ou ao chamar o Flask", err);
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json({
-                status: "success",
-                message: `Upload concluído, mas houve erro ao chamar o Flask`
+                status: "error",
+                message: "Erro interno ao processar arquivo."
             });
         }
     }
@@ -478,4 +492,30 @@ app.post('/iniciar-flask', async (req, res) => {
 
     tentarConectar();
     
+});
+
+
+
+// Exibir os chats por usuário na tela
+
+
+
+app.get('/chats', async (req, res) => {
+    const email = req.query.email;
+
+    if(!email) return res.status(400).json({ message: "Email é obrigatório." });
+
+    try {
+        const client = await pool.connect();
+        const result = await client.query(
+            'SELECT id, arquivo_nome, data_criacao FROM chats WHERE email = $1 ORDER BY data_criacao DESC LIMIT 3',
+            [email]
+        );
+        client.release();
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error("Erro ao buscar chats: ", err);
+        res.status(500).json({ message: "Erro interno." });
+    }
 });
