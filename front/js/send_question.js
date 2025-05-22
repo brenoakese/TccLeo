@@ -61,7 +61,8 @@ async function enviarMensagem() {
             body: JSON.stringify({
                 pergunta: prompt,
                 filename: nomeArquivo,
-                agente: agenteSelecionado
+                agente: agenteSelecionado,
+                email: localStorage.getItem("userEmail")
             }),
         });
 

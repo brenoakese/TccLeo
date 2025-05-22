@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from utils import latest_file
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import psycopg2
 
 from rag_local import *
 from separadores import *
@@ -13,6 +14,11 @@ from separadores import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/chat": {"origins": "*"}})
+
+@app.route("/ready", methods=["GET"])
+def ready():
+    return jsonify({ "status": "ready" }), 200
+
 
 
 #Ná Prática:
@@ -62,14 +68,6 @@ try:
     print("✅ Vectorstore carregado com sucesso!")
 except Exception as e:
     print("❌ Erro ao carregar vectorstore:", e)
-
-
-@app.route("/ready", methods=["GET"])
-def ready():
-    if vectorstore_ready:
-        return jsonify({ "status": "ready" }), 200
-    else:
-        return jsonify({ "status": "loading" }), 503
 
 
 # Bot 
@@ -138,6 +136,45 @@ def chat():
     """
 
     resposta = enviar_pergunta(prompt)
+
+    # salvar no banco
+    email = data.get("email")
+    arquivo = data.get("filename")
+
+    try:
+
+        # CONECTAR AO BANCO E REGISTRAR AS MENSAGENS
+        conn = psycopg2.connect(
+            dbname="Chabot",
+            user="postgres",
+            password="testralio",
+            host="localhost",
+            port=5432
+        )
+
+        cursor = conn.cursor()
+
+        # Buscar chat_id
+        cursor.execute("SELECT id FROM chats WHERE email = %s AND arquivo_nome = %s ORDER BY data_criacao DESC LIMIT 1", (email, arquivo))
+        row = cursor.fetchone()
+
+        if row:
+            chat_id = row[0]
+
+            # Inserir as mensagens
+            cursor.execute("INSERT INTO mensagens (chat_id, autor, texto) VALUES (%s, %s, %s)", (chat_id, "usuario", pergunta_original))
+            cursor.execute("INSERT INTO mensagens (chat_id, autor, texto) VALUES (%s, %s, %s)", (chat_id, "bot", resposta))
+
+            conn.commit()
+        else:
+            print("❗ Chat não encontrado para salvar mensagens.")
+
+        cursor.close()
+        conn.close()
+
+    except Exception as e:
+        print("❌ Erro ao salvar histórico no banco:", e)
+
     return jsonify({ "resposta": resposta })
 
 
