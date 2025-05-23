@@ -20,7 +20,7 @@ async function enviarMensagem() {
 
     // Obter nome do arquivo do localStorage
     const nomeArquivo = localStorage.getItem("arquivo");
-    const agenteSelecionado = localStorage.getItem("agenteSelecionado" || "Padrão");
+    const agenteSelecionado = localStorage.getItem("agenteSelecionado") || "Padrão";
 
     if (!nomeArquivo) {
         novaBolhaBot.innerHTML = "Erro: nenhum arquivo carregado.";
