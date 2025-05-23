@@ -14,13 +14,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelectorAll(".content-chats").forEach(el => el.remove());
 
         chats.forEach((chat, index) => {
+            const nomeArquivo = chat.arquivo_nome|| "undefinetd.txt";
+            const partes = nomeArquivo.split(".");
+            const antesPonto = partes[0] || "undefined";
+            const depoisPonto = partes[1] || "txt";
+            const agente = chat.agente || "desconhecido";
+
             const chatDiv = document.createElement("div");
             chatDiv.className = "content-chats";
 
             chatDiv.innerHTML = `
-                <h3 class="title-chats title-h3">${chat.nome}</h3>
-                <h4 class="title-chats title-h4">Banco de dados - ${chat.arquivo_nome}</h4>
-                <p class="description description-chats">Chat iniciado com um agente de perfil ${chat.agente}</p>
+                <h3 class="title-chats title-h3">${antesPonto}</h3>
+                <h4 class="title-chats title-h4">Banco de dados - ${depoisPonto}</h4>
+                <p class="description description-chats">Chat iniciado com um agente de perfil ${agente}</p>
                 <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
             `;
 
