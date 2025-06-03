@@ -1,35 +1,23 @@
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import os
+from dotenv import load_dotenv
+from PyPDF2 import PdfReader
+import pandas as pd
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
+from langchain_core.documents import Document
 from openai import OpenAI
-from dotenv import load_dotenv
-from utils import latest_file
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import psycopg2
 
-from rag_local import *
-from separadores import *
-
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/chat": {"origins": "*"}})
 
-@app.route("/ready", methods=["GET"])
-def ready():
-    return jsonify({ "status": "ready" }), 200
-
-
-
-#Ná Prática:
-    #1º Gerar o banco de dados
-    #2º Busca por similaridade
-    #3º Mandar o resultado da busca por similaridade para a LLM e a sua LLM, vai responder a pergunta
-
-load_dotenv()
-
 api_key = os.getenv("OPENAI_API_KEY")
-
 
 def reescrever_pergunta(pergunta):
     prompt_reescrita = f"""
@@ -41,7 +29,7 @@ Nova pergunta:
 """
     client = OpenAI(api_key=api_key)
     resposta = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Você é um assistente que reformula perguntas de forma clara e objetiva."},
             {"role": "user", "content": prompt_reescrita}
@@ -49,101 +37,119 @@ Nova pergunta:
         temperature=0.3,
         max_tokens=100
     )
+    return resposta.choices[0].message.content.strip()
 
-    nova_pergunta = resposta.choices[0].message.content.strip()
-    return nova_pergunta
+def carregar_documento_dinamicamente(filepath, filename):
+    if filepath.endswith(".txt"):
+        with open(filepath, "r", encoding="utf-8") as f:
+            conteudo = f.read()
+        return [Document(page_content=conteudo, metadata={"source": filename})]
 
+    elif filepath.endswith(".pdf"):
+        reader = PdfReader(filepath)
+        textos = []
+        for i, page in enumerate(reader.pages):
+            try:
+                text = page.extract_text()
+                if text:
+                    textos.append(Document(page_content=text, metadata={"source": f"{filename}_page_{i}"}))
+            except Exception as e:
+                print(f"⚠️ Erro ao extrair texto da página {i}: {e}")
+        return textos
 
-vectorstore_ready = False
-vectorstore = None
+    elif filepath.endswith(".csv"):
+        df = pd.read_csv(filepath)
+        conteudo = df.to_string()
+        return [Document(page_content=conteudo, metadata={"source": filename})]
 
+    else:
+        raise ValueError("Formato de arquivo não suportado.")
 
-try:
-    vectorstore = Chroma (
-        embedding_function=OpenAIEmbeddings(api_key=api_key),
-        persist_directory = "chroma"
-    )
-    vectorstore_ready = True
-        
-    print("✅ Vectorstore carregado com sucesso!")
-except Exception as e:
-    print("❌ Erro ao carregar vectorstore:", e)
-
-
-# Bot 
-def enviar_pergunta(nova_pergunta):
-    try:
-        # Envia a pergunta para a API
-        client = OpenAI(api_key=api_key)
-        resposta = client.chat.completions.create(
-            model="gpt-4o-mini", # Especifica o modelo a ser utilizado
-            messages=[
-                {"role": "user", "content": nova_pergunta}
-            ]
-        )
-
-        # Extrai a resposta gerada pelo GPT-4
-        return resposta.choices[0].message.content
-
-    except Exception as e:
-        return f"Ocorreu um erro: {e}"
-
-
+@app.route("/ready", methods=["GET"])
+def ready():
+    return jsonify({ "status": "ready" }), 200
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    if not vectorstore_ready:
-        return jsonify({ "erro": "Vectorstore ainda não está pronto" }), 503
-
     data = request.get_json()
     pergunta_original = data.get("pergunta")
+    filename = data.get("filename")
+    email = data.get("email")
+    agente = data.get("agente", "Padrão")
+
+    if not pergunta_original or not filename:
+        return jsonify({ "erro": "Pergunta ou arquivo ausente" }), 400
+
     pergunta_refinada = reescrever_pergunta(pergunta_original)
     print(f"❓ Pergunta original: {pergunta_original}")
     print(f"✏️ Pergunta reescrita: {pergunta_refinada}")
 
-    if not pergunta_original:
-        return jsonify({ "erro": "Pergunta não fornecida" }), 400
-    
-    docs = vectorstore.similarity_search_with_score(pergunta_refinada, k=4)
+    filepath = os.path.join(os.path.dirname(__file__), "..", "back", "files", filename)
+    if not os.path.exists(filepath):
+        return jsonify({ "erro": "Arquivo não encontrado" }), 404
 
-    # Obter contexto dos documentos retornados
-    contexto = "\n\n".join([doc[0].page_content for doc in docs])
+    persist_dir = f"chroma/{os.path.splitext(filename)[0]}"
+    try:
+        if not os.path.exists(persist_dir):
+            docs = carregar_documento_dinamicamente(filepath, filename)
+            text_splitter = CharacterTextSplitter(
+                separator=".",
+                chunk_size=1000,
+                chunk_overlap=200,
+                length_function=len,
+                is_separator_regex=False,
+            )
+            all_splits = text_splitter.split_documents(docs)
+            vectorstore = Chroma.from_documents(
+                documents=all_splits,
+                embedding=OpenAIEmbeddings(api_key=api_key),
+                persist_directory=persist_dir
+            )
+            vectorstore.persist()
+        else:
+            vectorstore = Chroma(
+                persist_directory=persist_dir,
+                embedding_function=OpenAIEmbeddings(api_key=api_key)
+            )
 
-    # Obter o agente para resposta
-    agente = data.get("agente", "Padrão")
+        resultados = vectorstore.similarity_search_with_score(pergunta_refinada, k=4)
+        contexto = "\n\n".join([doc[0].page_content for doc in resultados])
 
-    if agente == "Informal":
-        estilo = "linguagem informal, amigável, com emojis e gírias leves."
-    else:
-        estilo = "lingaugem clara, objetiva e profissional, mas sempre respeitoso e educado."
+    except Exception as e:
+        print("❌ Erro ao processar vectorstore:", e)
+        return jsonify({ "erro": "Erro ao processar vectorstore" }), 500
 
-    # Criar o prompt com base no contexto e na pergunta
+    estilo = "linguagem informal, amigável, com emojis e gírias leves." if agente == "Informal" else "linguagem clara, objetiva e profissional, mas sempre respeitosa e educada."
+
     prompt = f"""
-    Você é um assistente inteligente que responde perguntas com base nas informações fornecidas no contexto abaixo. 
-    Se a resposta não estiver no contexto, diga que não encontrou essa informação.
+Você é um assistente inteligente que responde perguntas com base nas informações fornecidas no contexto abaixo. 
+Se a resposta não estiver no contexto, diga que não encontrou essa informação.
 
-    Seu estilo de resposta deve ser: {estilo}
+Seu estilo de resposta deve ser: {estilo}
 
-    ### CONTEXTO
+### CONTEXTO
 
-    {contexto}
+{contexto}
 
-    ### PERGUNTA
+### PERGUNTA
 
-    {pergunta_refinada}
+{pergunta_refinada}
 
-    ### RESPOSTA
-    """
-
-    resposta = enviar_pergunta(prompt)
-
-    # salvar no banco
-    email = data.get("email")
-    arquivo = data.get("filename")
+### RESPOSTA
+"""
 
     try:
+        client = OpenAI(api_key=api_key)
+        resposta = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        resposta_final = resposta.choices[0].message.content
+    except Exception as e:
+        print("❌ Erro na chamada à API OpenAI:", e)
+        return jsonify({ "erro": "Erro ao consultar modelo de linguagem" }), 500
 
-        # CONECTAR AO BANCO E REGISTRAR AS MENSAGENS
+    try:
         conn = psycopg2.connect(
             dbname="Chabot",
             user="postgres",
@@ -151,20 +157,14 @@ def chat():
             host="localhost",
             port=5432
         )
-
         cursor = conn.cursor()
-
-        # Buscar chat_id
-        cursor.execute("SELECT id FROM chats WHERE email = %s AND arquivo_nome = %s ORDER BY data_criacao DESC LIMIT 1", (email, arquivo))
+        cursor.execute("SELECT id FROM chats WHERE email = %s AND arquivo_nome = %s ORDER BY data_criacao DESC LIMIT 1", (email, filename))
         row = cursor.fetchone()
 
         if row:
             chat_id = row[0]
-
-            # Inserir as mensagens
             cursor.execute("INSERT INTO mensagens (chat_id, autor, texto) VALUES (%s, %s, %s)", (chat_id, "usuario", pergunta_original))
-            cursor.execute("INSERT INTO mensagens (chat_id, autor, texto) VALUES (%s, %s, %s)", (chat_id, "bot", resposta))
-
+            cursor.execute("INSERT INTO mensagens (chat_id, autor, texto) VALUES (%s, %s, %s)", (chat_id, "bot", resposta_final))
             conn.commit()
         else:
             print("❗ Chat não encontrado para salvar mensagens.")
@@ -175,9 +175,8 @@ def chat():
     except Exception as e:
         print("❌ Erro ao salvar histórico no banco:", e)
 
-    return jsonify({ "resposta": resposta })
-
+    return jsonify({ "resposta": resposta_final })
 
 if __name__ == "__main__":
-    print("Servidor FLASK rodando em http://127.0.0.1")
+    print("Servidor FLASK rodando em http://127.0.0.1:5000")
     app.run(debug=True, host="127.0.0.1", port=5000)

@@ -2,7 +2,7 @@ document.getElementById('form-upload-txt').addEventListener('submit', async (eve
     event.preventDefault();
 
     const formData = new FormData();
-    const fileInput = document.getElementById('arquivoTxt');
+    const fileInput = document.getElementById('arquivoUpload');
 
     formData.append('arquivoTxt', fileInput.files[0]);
 

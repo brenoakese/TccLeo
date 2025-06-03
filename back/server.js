@@ -377,7 +377,7 @@ app.get('/', (req, res) => {
 app.post("/upload",
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
-    fileExtLimiter(['.txt']),
+    fileExtLimiter(['.txt', '.pdf', '.csv']),
     fileSizeLimiter,
     async (req, res) => {
         const files = req.files;

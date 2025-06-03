@@ -27,7 +27,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <h3 class="title-chats title-h3">${antesPonto}</h3>
                 <h4 class="title-chats title-h4">Banco de dados - ${depoisPonto}</h4>
                 <p class="description description-chats">Chat iniciado com um agente de perfil ${agente}</p>
-                <button class="btn btn-second btn-ir-chat" data-index="${chats.length - 1 - index}">Ir para chat</button>
+                <button class="btn btn-second btn-ir-chat" 
+                        data-index="${chats.length - 1 - index}" 
+                        data-arquivo="${chat.arquivo_nome}" 
+                        data-agente="${chat.agente || "Padrão"}">
+                    Ir para chat
+                </button>
+
             `;
 
             container.appendChild(chatDiv);

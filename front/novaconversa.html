@@ -81,7 +81,7 @@
                     <label class="div-input" for="file">
                         <i class="fa-solid fa-file icon-modify" style="color: #63E6BE;""></i>
                         <!-- <input type="file" id="file" name="file" />    for single file upload -->
-                        <input type="file" id="myFiles" accept=".txt" multiple />
+                        <input type="file" id="arquivoUpload" accept=".txt, .pdf, .csv" multiple />
                         <!-- for multiple files uploads -->
                         <button type="submit"> Upload File </button>
                     </label> 
@@ -98,7 +98,7 @@
                     const btnAgente = document.getElementById("btn-selecionaragente");
 
                     const sendFiles = async () => {
-                        const myFiles = document.getElementById('myFiles').files;
+                        const myFiles = document.getElementById('arquivoUpload').files;
                         const mensagemStatus = document.getElementById("mensagem-status");
 
                         if (!myFiles.length) {
