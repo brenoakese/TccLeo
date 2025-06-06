@@ -10,7 +10,8 @@ document.getElementById('form-upload-txt').addEventListener('submit', async (eve
         const response = await fetch('http://localhost:3000/upload', {
             method: 'POST',
             headers: {
-                'x-user-email': localStorage.getItem("userEmail")
+                'x-user-email': localStorage.getItem("userEmail"),
+                'x-agente-selecionado': localStorage.getItem("agenteSelecionado")
             },
             body: formData
         });

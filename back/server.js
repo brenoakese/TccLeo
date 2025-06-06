@@ -1,12 +1,10 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import pkg from 'pg';
 import path from 'path';
 import  fileUpload from 'express-fileupload';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { exec } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,6 +13,16 @@ const __dirname = dirname(__filename);
 import filesPayloadExists from './middleware/filesPayloadExists.js';
 import fileExtLimiter from './middleware/fileExtLimiter.js';
 import fileSizeLimiter from './middleware/fileSizeLimiter.js';
+
+
+
+const flaskProcess = spawn("python3", ["chatbot/gpt4o-mini.py"], {
+  detached: true,
+  stdio: "inherit"
+});
+flaskProcess.unref();
+console.log("🚀 Servidor Flask sendo iniciado automaticamente...");
+
 
 
 
@@ -383,6 +391,7 @@ app.post("/upload",
         const files = req.files;
         const uploadedFileNames = [];
         const email = req.headers['x-user-email'];
+        const agente = req.headers['x-agente-selecionado'] || "Padrão";
 
         if(!email) {
             return res.status(400).json({ message: "Email do usuárionão recebido" });
@@ -410,8 +419,8 @@ app.post("/upload",
 
             const client = await pool.connect();
             await client.query(
-                'INSERT INTO chats (email, arquivo_nome) VALUES($1, $2)',
-                [email, filename]
+                'INSERT INTO chats (email, arquivo_nome, agente) VALUES($1, $2, $3)',
+                [email, filename, agente]
             );
             client.release();
 
@@ -508,7 +517,7 @@ app.get('/chats', async (req, res) => {
     try {
         const client = await pool.connect();
         const result = await client.query(
-            'SELECT id, arquivo_nome, data_criacao FROM chats WHERE email = $1 ORDER BY data_criacao DESC LIMIT 3',
+            'SELECT id, arquivo_nome, agente, data_criacao FROM chats WHERE email = $1 ORDER BY data_criacao DESC LIMIT 3',
             [email]
         );
         client.release();
