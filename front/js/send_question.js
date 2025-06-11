@@ -49,7 +49,9 @@ async function enviarMensagem() {
         pergunta: prompt,
         filename: nomeArquivo,
         agente: agenteSelecionado
-    });    
+    });   
+    
+    const inicio = performance.now();
 
     try {
         // Envia requisição com a mensagem para a API do ChatBot
@@ -65,6 +67,10 @@ async function enviarMensagem() {
                 email: localStorage.getItem("userEmail")
             }),
         });
+
+        const fim = performance.now();
+        const tempoResposta = (fim - inicio).toFixed(2);
+        console.log(`⏱️ Tempo de resposta: ${tempoResposta} ms`);
 
         const json = await resposta.json();
         const textoResposta = json.resposta || json.erro || "Erro desconhecido.";

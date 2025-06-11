@@ -1,0 +1,133 @@
+tournament_id,award_id,award_name,shared,player_id
+WC-1930,A-4,Golden Boot,0,P-04418
+WC-1930,A-5,Silver Boot,0,P-00724
+WC-1930,A-6,Bronze Boot,0,P-09215
+WC-1934,A-4,Golden Boot,0,P-05627
+WC-1934,A-5,Silver Boot,1,P-03649
+WC-1934,A-5,Silver Boot,1,P-02250
+WC-1938,A-4,Golden Boot,0,P-03023
+WC-1938,A-5,Silver Boot,1,P-08824
+WC-1938,A-5,Silver Boot,1,P-02366
+WC-1938,A-5,Silver Boot,1,P-04466
+WC-1950,A-4,Golden Boot,0,P-04188
+WC-1950,A-5,Silver Boot,0,P-06216
+WC-1950,A-6,Bronze Boot,1,P-08187
+WC-1950,A-6,Bronze Boot,1,P-02577
+WC-1950,A-6,Bronze Boot,1,P-03281
+WC-1954,A-4,Golden Boot,0,P-07498
+WC-1954,A-5,Silver Boot,1,P-05476
+WC-1954,A-5,Silver Boot,1,P-01070
+WC-1954,A-5,Silver Boot,1,P-01943
+WC-1958,A-4,Golden Boot,0,P-00643
+WC-1958,A-5,Silver Boot,1,P-03795
+WC-1958,A-5,Silver Boot,1,P-08148
+WC-1958,A-8,Best Young Player,0,P-03795
+WC-1962,A-4,Golden Boot,1,P-05509
+WC-1962,A-4,Golden Boot,1,P-04025
+WC-1962,A-4,Golden Boot,1,P-03508
+WC-1962,A-4,Golden Boot,1,P-00009
+WC-1962,A-4,Golden Boot,1,P-06737
+WC-1962,A-4,Golden Boot,1,P-01219
+WC-1962,A-8,Best Young Player,0,P-05509
+WC-1966,A-4,Golden Boot,0,P-01633
+WC-1966,A-5,Silver Boot,0,P-08039
+WC-1966,A-6,Bronze Boot,1,P-04356
+WC-1966,A-6,Bronze Boot,1,P-02995
+WC-1966,A-6,Bronze Boot,1,P-03234
+WC-1966,A-6,Bronze Boot,1,P-06927
+WC-1966,A-8,Best Young Player,0,P-04356
+WC-1970,A-4,Golden Boot,0,P-02483
+WC-1970,A-5,Silver Boot,0,P-07877
+WC-1970,A-6,Bronze Boot,0,P-01348
+WC-1970,A-8,Best Young Player,0,P-01348
+WC-1974,A-4,Golden Boot,0,P-07200
+WC-1974,A-5,Silver Boot,1,P-07695
+WC-1974,A-5,Silver Boot,1,P-00830
+WC-1974,A-8,Best Young Player,0,P-02284
+WC-1978,A-1,Golden Ball,0,P-07202
+WC-1978,A-2,Silver Ball,0,P-08703
+WC-1978,A-3,Bronze Ball,0,P-02014
+WC-1978,A-4,Golden Boot,0,P-07202
+WC-1978,A-5,Silver Boot,0,P-01348
+WC-1978,A-6,Bronze Boot,0,P-07325
+WC-1978,A-8,Best Young Player,0,P-05548
+WC-1982,A-1,Golden Ball,0,P-08703
+WC-1982,A-2,Silver Ball,0,P-05820
+WC-1982,A-3,Bronze Ball,0,P-08975
+WC-1982,A-4,Golden Boot,0,P-08703
+WC-1982,A-5,Silver Boot,0,P-08975
+WC-1982,A-6,Bronze Boot,0,P-03653
+WC-1982,A-8,Best Young Player,0,P-09137
+WC-1986,A-1,Golden Ball,0,P-06516
+WC-1986,A-2,Silver Ball,0,P-03585
+WC-1986,A-3,Bronze Ball,0,P-06503
+WC-1986,A-4,Golden Boot,0,P-02777
+WC-1986,A-5,Silver Boot,1,P-07608
+WC-1986,A-5,Silver Boot,1,P-08699
+WC-1986,A-5,Silver Boot,1,P-06516
+WC-1986,A-8,Best Young Player,0,P-00872
+WC-1990,A-1,Golden Ball,0,P-04373
+WC-1990,A-2,Silver Ball,0,P-01993
+WC-1990,A-3,Bronze Ball,0,P-06516
+WC-1990,A-4,Golden Boot,0,P-04373
+WC-1990,A-5,Silver Boot,0,P-03413
+WC-1990,A-6,Bronze Boot,1,P-02777
+WC-1990,A-6,Bronze Boot,1,P-00994
+WC-1990,A-8,Best Young Player,0,P-07639
+WC-1994,A-1,Golden Ball,0,P-07489
+WC-1994,A-2,Silver Ball,0,P-09078
+WC-1994,A-3,Bronze Ball,0,P-06855
+WC-1994,A-4,Golden Boot,1,P-07023
+WC-1994,A-4,Golden Boot,1,P-06855
+WC-1994,A-6,Bronze Boot,1,P-08602
+WC-1994,A-6,Bronze Boot,1,P-07489
+WC-1994,A-7,Golden Glove,0,P-09628
+WC-1994,A-8,Best Young Player,0,P-08704
+WC-1998,A-1,Golden Ball,0,P-04601
+WC-1998,A-2,Silver Ball,0,P-04705
+WC-1998,A-3,Bronze Ball,0,P-01770
+WC-1998,A-4,Golden Boot,0,P-04705
+WC-1998,A-5,Silver Boot,1,P-05392
+WC-1998,A-5,Silver Boot,1,P-04765
+WC-1998,A-7,Golden Glove,0,P-06099
+WC-1998,A-8,Best Young Player,0,P-07705
+WC-2002,A-1,Golden Ball,0,P-04412
+WC-2002,A-2,Silver Ball,0,P-04601
+WC-2002,A-3,Bronze Ball,0,P-04298
+WC-2002,A-4,Golden Boot,0,P-04601
+WC-2002,A-5,Silver Boot,1,P-05239
+WC-2002,A-5,Silver Boot,1,P-00008
+WC-2002,A-7,Golden Glove,0,P-04412
+WC-2002,A-8,Best Young Player,0,P-06818
+WC-2006,A-1,Golden Ball,0,P-03582
+WC-2006,A-2,Silver Ball,0,P-08617
+WC-2006,A-3,Bronze Ball,0,P-09247
+WC-2006,A-4,Golden Boot,0,P-05239
+WC-2006,A-5,Silver Boot,0,P-07013
+WC-2006,A-6,Bronze Boot,0,P-04601
+WC-2006,A-7,Golden Glove,0,P-00132
+WC-2006,A-8,Best Young Player,0,P-07597
+WC-2010,A-1,Golden Ball,0,P-01628
+WC-2010,A-2,Silver Ball,0,P-06373
+WC-2010,A-3,Bronze Ball,0,P-04291
+WC-2010,A-4,Golden Boot,0,P-00904
+WC-2010,A-5,Silver Boot,0,P-04291
+WC-2010,A-6,Bronze Boot,0,P-06373
+WC-2010,A-7,Golden Glove,0,P-06875
+WC-2010,A-8,Best Young Player,0,P-00904
+WC-2014,A-1,Golden Ball,0,P-06410
+WC-2014,A-2,Silver Ball,0,P-00904
+WC-2014,A-3,Bronze Ball,0,P-06098
+WC-2014,A-4,Golden Boot,0,P-03676
+WC-2014,A-5,Silver Boot,0,P-00904
+WC-2014,A-6,Bronze Boot,0,P-01576
+WC-2014,A-7,Golden Glove,0,P-06554
+WC-2014,A-8,Best Young Player,0,P-06083
+WC-2018,A-1,Golden Ball,0,P-03056
+WC-2018,A-2,Silver Ball,0,P-04214
+WC-2018,A-3,Bronze Ball,0,P-06140
+WC-2018,A-4,Golden Boot,0,P-08448
+WC-2018,A-5,Silver Boot,0,P-06140
+WC-2018,A-6,Bronze Boot,0,P-02175
+WC-2018,A-7,Golden Glove,0,P-05665
+WC-2018,A-8,Best Young Player,0,P-02842
