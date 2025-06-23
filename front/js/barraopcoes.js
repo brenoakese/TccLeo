@@ -29,30 +29,14 @@ document.getElementById("btn-sair-conta").addEventListener("click", async (event
     event.preventDefault()
 
     // Remover dados do usuário => localStorage
-    localStorage.removeItem("userSession");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("arquivo");
+    localStorage.removeItem("agenteSelecionado");
 
-    // Requisição ao servidor para finalizar a sessão
-    try {
-        const response = await fetch('http://127.0.0.1:3000/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            console.log(result.message); // Exibe mensagem de sucesso
-
-            window.location.href = 'index.html';
-        } else {
-            console.error(result.message); // Exibe mensagem de erro
-        }
-    } catch (error) {
-        console.error("Erro ao sair da conta:", error);
-    }
+    // Redirecionar para login
+    window.location.href = "index.html";
     
-})
+});
 
 
 
