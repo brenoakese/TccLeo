@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:3000/user-info?email=${email}`);
+        const response = await fetch(`http://127.0.0.1:5501/user-info?email=${email}`);
 
         const result = await response.json();
 
@@ -62,7 +62,7 @@ document.getElementById("btn-redefinir").addEventListener("click", async (event)
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:3000/update-account', {
+        const response = await fetch('http://127.0.0.1:5501/update-account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ document.getElementById("btn-deletar-conta").addEventListener("click", async (ev
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:3000/delete-account', {
+        const response = await fetch('http://127.0.0.1:5501/delete-account', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
